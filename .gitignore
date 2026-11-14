@@ -1,0 +1,33 @@
+# secrets: never commit (the example file is the only .env that is tracked)
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+frontend/.env.local
+frontend/.env.*.local
+
+# node
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+*.egg-info/
+
+# logs, OS and editor noise
+*.log
+.DS_Store
+Thumbs.db
+
+# data: the small demo cache in backend/data is tracked so the demo works offline (~11 MB).
+# If it ever grows past ~50 MB, ignore the big files here instead of committing them:
+# backend/data/cache/*.parquet

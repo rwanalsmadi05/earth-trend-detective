@@ -1,0 +1,731 @@
+{
+  "power_monthly_31.88_36.83_1981_2025": {
+    "fetched": "2026-11-14T18:40:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.88&longitude=36.83&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_31.88_36.83_1981_2025": {
+    "fetched": "2026-11-14T18:40:03+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=31.88&longitude=36.83"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_2001-08-15.jpg": {
+    "fetched": "2026-11-14T18:47:22+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-08-15&BBOX=31.4,36.3,32.4,37.4&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_2024-08-15.jpg": {
+    "fetched": "2026-11-14T18:47:23+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2024-08-15&BBOX=31.4,36.3,32.4,37.4&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500"
+  },
+  "power_monthly_-32.02_-63.97_1981_2025": {
+    "fetched": "2026-11-14T19:30:00+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=-32.022249&longitude=-63.9698736&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_-32.02_-63.97_1981_2025": {
+    "fetched": "2026-11-14T19:30:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=-32.022249&longitude=-63.9698736"
+  },
+  "gibs_capabilities.xml": {
+    "fetched": "2026-11-14T19:30:58+00:00",
+    "url": "https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/1.0.0/WMTSCapabilities.xml"
+  },
+  "img_azraq_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-14T19:43:07+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_azraq_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-14T19:43:08+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_wetland_2001-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:09+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-15&BBOX=31.6800,36.5900,32.0800,37.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-03-15"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_wetland_2025-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:10+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=31.6800,36.5900,32.0800,37.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_azraq_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m03_region_2016-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:11+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-03-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-03-15"
+  },
+  "img_azraq_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m03_region_2025-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:12+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_azraq_SMAP_L4_Analyzed_Surface_Soil_Moisture_m03_region_2016-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:13+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-03-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-03-15"
+  },
+  "img_azraq_SMAP_L4_Analyzed_Surface_Soil_Moisture_m03_region_2025-03-15.jpg": {
+    "fetched": "2026-11-14T19:43:15+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_azraq_MODIS_Terra_L3_NDVI_Monthly_m03_region_2001-03-01.jpg": {
+    "fetched": "2026-11-14T19:43:17+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2001-03-01"
+  },
+  "img_azraq_MODIS_Terra_L3_NDVI_Monthly_m03_region_2025-03-01.jpg": {
+    "fetched": "2026-11-14T19:43:18+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-01"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m07_region_2001-07-15.jpg": {
+    "fetched": "2026-11-14T19:43:20+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "Coastlines_15m"
+    ],
+    "date": "2001-07-15"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m07_region_2025-07-15.jpg": {
+    "fetched": "2026-11-14T19:43:21+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-15&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "Coastlines_15m"
+    ],
+    "date": "2025-07-15"
+  },
+  "img_azraq_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2001-07-01.jpg": {
+    "fetched": "2026-11-14T19:43:39+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-07-01"
+  },
+  "img_azraq_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2025-07-01.jpg": {
+    "fetched": "2026-11-14T19:43:39+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-01&BBOX=29.3800,33.8300,34.3800,39.8300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-07-01"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_oasis_2001-03-15.jpg": {
+    "fetched": "2026-11-14T19:44:01+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-15&BBOX=31.3800,36.2300,32.3800,37.4300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-03-15"
+  },
+  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_oasis_2025-03-15.jpg": {
+    "fetched": "2026-11-14T19:44:03+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=31.3800,36.2300,32.3800,37.4300&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-03-15"
+  },
+  "modis_ndvi_31.88_36.83_2025": {
+    "fetched": "2026-11-14T19:45:18+00:00",
+    "url": "https://modis.ornl.gov/rst/api/v1/MOD13Q1/subset?latitude=31.88&longitude=36.83&band=250m_16_days_NDVI"
+  },
+  "power_monthly_32.55_35.85_1981_2025": {
+    "fetched": "2026-11-14T19:55:33+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.55&longitude=35.85&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_32.55_35.85_1981_2025": {
+    "fetched": "2026-11-14T19:55:35+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.55&longitude=35.85"
+  },
+  "power_monthly_30.25_35.25_1981_2025": {
+    "fetched": "2026-11-14T19:57:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.25&longitude=35.25&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_30.25_35.25_1981_2025": {
+    "fetched": "2026-11-14T19:57:20+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=30.25&longitude=35.25"
+  },
+  "power_monthly_32.56_35.85_1981_2025": {
+    "fetched": "2026-11-14T19:59:38+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.556&longitude=35.85&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_32.56_35.85_1981_2025": {
+    "fetched": "2026-11-14T19:59:40+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.556&longitude=35.85"
+  },
+  "power_monthly_29.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:43+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:43+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:44+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:44+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:44+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:45+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:45+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:45+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:45+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:46+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.00_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:46+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.0&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:47+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:47+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:48+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:48+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:48+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:48+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:49+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:49+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:49+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:50+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:50+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:51+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_29.50_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:51+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=29.5&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:51+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:52+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:52+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:52+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:53+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:53+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:53+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:54+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:54+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:54+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:55+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:55+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:55+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:56+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:56+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:57+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:57+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:57+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:58+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:58+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:59+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:04:59+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_30.50_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:04:59+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.5&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:00+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:00+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:00+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:01+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:03+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:03+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:03+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:04+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:05+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:05+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:05+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:05+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:06+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:06+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:07+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:07+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_31.50_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:07+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:08+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:08+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:08+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:09+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:09+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:09+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:10+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:10+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:10+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:12+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:12+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:13+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:13+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:13+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:13+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:14+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:14+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:14+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:15+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_32.50_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:15+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.5&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:16+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:16+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:16+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:17+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:17+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:17+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:18+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:20+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:20+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:20+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:21+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:21+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:22+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:22+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:22+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:23+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:23+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:23+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:24+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_33.50_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:24+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=33.5&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_34.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:24+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=34.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_34.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:25+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=34.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_35.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:25+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=35.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_35.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:25+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=35.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_36.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:25+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=36.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_37.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:26+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=37.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:26+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=36.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_37.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:26+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=37.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_38.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:27+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=38.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_38.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:27+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=38.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_39.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:27+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=39.0&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_39.50_1981_2025": {
+    "fetched": "2026-11-14T20:05:28+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=39.5&start=1981&end=2025&format=JSON"
+  },
+  "power_monthly_34.00_40.00_1981_2025": {
+    "fetched": "2026-11-14T20:05:28+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  }
+}

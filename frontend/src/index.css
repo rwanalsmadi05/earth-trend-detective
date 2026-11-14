@@ -1,0 +1,27 @@
+﻿@tailwind base; @tailwind components; @tailwind utilities;
+html { background: #05070B; color: #F4F1EA; scroll-behavior: smooth; }
+body { margin: 0; font-family: Inter, sans-serif; overflow-x: hidden; }
+.cork { background-color:#9a6b3f;
+  background-image: radial-gradient(rgba(60,30,10,.35) 1px, transparent 1.5px), radial-gradient(rgba(255,220,170,.18) 1px, transparent 1.5px);
+  background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 4px; }
+.flicker { animation: flicker 6s infinite; }
+@keyframes flicker { 0%,100%{opacity:1} 41%{opacity:.93} 43%{opacity:1} 77%{opacity:.96} 79%{opacity:1} }
+.ticker { animation: ticker 60s linear infinite; }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.stars { background-image:
+  radial-gradient(1px 1px at 20px 30px,#fff,transparent), radial-gradient(1px 1px at 120px 80px,#cfe,transparent),
+  radial-gradient(1.5px 1.5px at 220px 150px,#fff,transparent), radial-gradient(1px 1px at 300px 40px,#fff,transparent);
+  background-size: 340px 200px; animation: twinkle 5s ease-in-out infinite alternate; }
+@keyframes twinkle { from{opacity:.5} to{opacity:1} }
+@media (prefers-reduced-motion: reduce) { *{animation:none!important; scroll-behavior:auto} }
+@keyframes lock-ring { 0%{transform:scale(.3);opacity:.9} 100%{transform:scale(3.2);opacity:0} }
+@keyframes lock-core { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
+.dust { position:absolute; border-radius:9999px; background:rgba(255,236,200,.8); filter:blur(.5px); animation: dust-float var(--d,14s) linear var(--delay,0s) infinite; opacity:0; }
+@keyframes dust-float { 0%{transform:translate(0,20px);opacity:0} 15%{opacity:var(--o,.5)} 85%{opacity:var(--o,.5)} 100%{transform:translate(var(--dx,20px),-160px);opacity:0} }
+input[type=number].plain::-webkit-inner-spin-button, input[type=number].plain::-webkit-outer-spin-button { -webkit-appearance:none; margin:0 }
+input[type=number].plain { -moz-appearance:textfield; appearance:textfield }
+.dual { position:absolute; inset:0; width:100%; height:100%; margin:0; background:none; pointer-events:none; -webkit-appearance:none; appearance:none; }
+.dual::-webkit-slider-runnable-track { background:transparent; height:100%; }
+.dual::-moz-range-track { background:transparent; }
+.dual::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; height:22px; width:22px; border-radius:9999px; background:#C8261E; border:3px solid #F4F1EA; box-shadow:0 2px 5px rgba(0,0,0,.5); cursor:grab; margin-top:5px; }
+.dual::-moz-range-thumb { pointer-events:auto; height:16px; width:16px; border-radius:9999px; background:#C8261E; border:3px solid #F4F1EA; box-shadow:0 2px 5px rgba(0,0,0,.5); cursor:grab; }

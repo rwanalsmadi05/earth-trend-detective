@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+httpx
+pandas
+numpy
+pyarrow
+scipy
+statsmodels
+pymannkendall
+python-dotenv
+pytest
+google-genai
+watchfiles
