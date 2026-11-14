@@ -5,7 +5,7 @@
   },
   "power_daily_t2mmax_31.88_36.83_1981_2025": {
     "fetched": "2026-11-14T18:40:03+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=31.88&longitude=36.83"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=31.88&longitude=36.83&start=19810101&end=20251231&format=JSON"
   },
   "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_2001-08-15.jpg": {
     "fetched": "2026-11-14T18:47:22+00:00",
@@ -21,7 +21,7 @@
   },
   "power_daily_t2mmax_-32.02_-63.97_1981_2025": {
     "fetched": "2026-11-14T19:30:01+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=-32.022249&longitude=-63.9698736"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=-32.022249&longitude=-63.9698736&start=19810101&end=20251231&format=JSON"
   },
   "gibs_capabilities.xml": {
     "fetched": "2026-11-14T19:30:58+00:00",
@@ -186,7 +186,7 @@
   },
   "power_daily_t2mmax_32.55_35.85_1981_2025": {
     "fetched": "2026-11-14T19:55:35+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.55&longitude=35.85"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.55&longitude=35.85&start=19810101&end=20251231&format=JSON"
   },
   "power_monthly_30.25_35.25_1981_2025": {
     "fetched": "2026-11-14T19:57:19+00:00",
@@ -194,7 +194,7 @@
   },
   "power_daily_t2mmax_30.25_35.25_1981_2025": {
     "fetched": "2026-11-14T19:57:20+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=30.25&longitude=35.25"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=30.25&longitude=35.25&start=19810101&end=20251231&format=JSON"
   },
   "power_monthly_32.56_35.85_1981_2025": {
     "fetched": "2026-11-14T19:59:38+00:00",
@@ -202,7 +202,7 @@
   },
   "power_daily_t2mmax_32.56_35.85_1981_2025": {
     "fetched": "2026-11-14T19:59:40+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.556&longitude=35.85"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.556&longitude=35.85&start=19810101&end=20251231&format=JSON"
   },
   "power_monthly_29.00_35.00_1981_2025": {
     "fetched": "2026-11-14T20:04:43+00:00",
@@ -730,7 +730,7 @@
   },
   "power_daily_t2mmax_32.00_36.50_1981_2025": {
     "fetched": "2026-11-14T20:19:04+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.0&longitude=36.5"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.0&longitude=36.5&start=19810101&end=20251231&format=JSON"
   },
   "power_monthly_53.65_18.73_1981_2025": {
     "fetched": "2026-11-14T20:19:10+00:00",
@@ -738,6 +738,6 @@
   },
   "power_daily_t2mmax_53.65_18.73_1981_2025": {
     "fetched": "2026-11-14T20:19:11+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=53.6462325&longitude=18.7290468"
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=53.6462325&longitude=18.7290468&start=19810101&end=20251231&format=JSON"
   }
 }

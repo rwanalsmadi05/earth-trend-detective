@@ -8,7 +8,7 @@ from . import cache, gazetteer, i18n, image_specs, planner, stats
 from .config import CASES, LAST_FULL_YEAR, START_YEAR
 from .planner import PlaceNotFound
 from .sources import gibs, modis, power
-from .variables import DEFAULT_PLAN, PLAIN, VARIABLES
+from .variables import DEFAULT_PLAN, PLAIN, SOURCE_NOTE, VARIABLES
 
 API_PREFIX = os.getenv("PUBLIC_API_PREFIX", "/api")  # frontend dev proxy strips /api; images are served at /images/<file>
 
@@ -113,10 +113,23 @@ def _series_for(vid, lat, lon, power_df, hot, ndvi):
 def _source(vid, lat, lon, start, end):
     v = VARIABLES[vid]
     if v["kind"] == "power":
-        return f"NASA POWER · {v['col']}", power.monthly_url(lat, lon, start, end)
+        note = f" — {SOURCE_NOTE[vid]}" if vid in SOURCE_NOTE else ""
+        return f"NASA POWER · {v['col']}{note}", power.monthly_url(lat, lon, start, end)
     if v["kind"] == "power_daily":
-        return "NASA POWER daily · T2M_MAX (days above 35 °C)", f"{power.DAILY}?parameters=T2M_MAX&community=AG&latitude={lat}&longitude={lon}&format=JSON"
+        return "NASA POWER daily · T2M_MAX (days above 35 °C)", power.daily_url(lat, lon)   # the full record is always fetched
     return "MODIS MOD13Q1 · ORNL DAAC (250 m, from 2000)", f"{modis.BASE}/subset?latitude={lat}&longitude={lon}&band={modis.BAND}"
+
+
+def expert_note(vid, tr, place_name):
+    """Honest data-provenance text for the expert drawer / report (computed numbers only; no new claims)."""
+    if vid in ("GWETROOT", "GWETTOP"):
+        small = ", small absolute change" if abs(tr.total_change) < 0.05 else ""
+        return (f"data: {SOURCE_NOTE[vid]}{small} ({tr.total_change:+.3f} index units since {tr.first_year}; "
+                "a model index, not measured moisture)")
+    if vid == "PRECTOTCORR":
+        return (f"data: POWER cell is ~0.5 deg (MERRA-2 reanalysis) and averages a wider area that can include uplands, "
+                f"so rainfall may be higher than the {place_name} station")
+    return ""
 
 
 def build_case(*args, **kw):
@@ -180,7 +193,9 @@ def build_case_and_expert(question, variables=None, lat=None, lon=None, place=No
             "direction": tr.direction, "series": tr.annual,
         })
         expert[vid] = {"method": tr.method, "reason": tr.reason, "n_months": tr.n if seasonal else None,
-                       "n_tested": tr.n_tested, "test_on": "monthly anomalies (seasonality removed), Hamed-Rao lag cap 12" if seasonal else "annual values",
+                       "n_tested": tr.n_tested,
+                       "test_on": ("monthly anomalies (seasonality removed), Hamed-Rao lag cap 12" if seasonal else "annual values")
+                                  + (f" · {expert_note(vid, tr, pl['name'])}" if expert_note(vid, tr, pl["name"]) else ""),
                        "baseline": tr.baseline, "borderline": tr.borderline, "tau": tr.tau, "p": tr.p, "sen_per_decade": tr.sen_per_decade}
         if seasonal:
             anoms[vid] = stats.deseasonalize(raw.astype(float)).dropna()

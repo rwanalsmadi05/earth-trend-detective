@@ -38,9 +38,19 @@ def monthly(lat, lon, start=START_YEAR, end=LAST_FULL_YEAR, refresh=False):
     return df, st, key
 
 
+def daily_params(lat, lon, start, end) -> dict:
+    """The exact query of the daily POWER request (one source of truth for the request AND every URL we store or return)."""
+    return {"parameters": "T2M_MAX", "community": "AG", "latitude": lat, "longitude": lon,
+            "start": f"{start}0101", "end": f"{end}1231", "format": "JSON"}
+
+
+def daily_url(lat, lon, start=START_YEAR, end=LAST_FULL_YEAR) -> str:
+    """Human-readable URL of the daily request, including community and the full start/end dates."""
+    return f"{DAILY}?" + "&".join(f"{k}={v}" for k, v in daily_params(lat, lon, start, end).items())
+
+
 def _fetch_daily(lat, lon, start, end) -> pd.DataFrame:
-    js = get(DAILY, {"parameters": "T2M_MAX", "community": "AG", "latitude": lat, "longitude": lon,
-                     "start": f"{start}0101", "end": f"{end}1231", "format": "JSON"})
+    js = get(DAILY, daily_params(lat, lon, start, end))
     s = pd.Series(js["properties"]["parameter"]["T2M_MAX"])
     s.index = pd.to_datetime(s.index, format="%Y%m%d")
     return s.where(s != -999).rename("T2M_MAX").to_frame()
@@ -49,6 +59,6 @@ def _fetch_daily(lat, lon, start, end) -> pd.DataFrame:
 def hot_days_per_year(lat, lon, threshold=35.0, start=START_YEAR, end=LAST_FULL_YEAR, refresh=False):
     key = f"power_daily_t2mmax_{lat:.2f}_{lon:.2f}_{start}_{end}"
     df, st = cache.cached_df(key, lambda: _fetch_daily(lat, lon, start, end), refresh,
-                             {"url": f"{DAILY}?parameters=T2M_MAX&latitude={lat}&longitude={lon}"})
+                             {"url": daily_url(lat, lon, start, end)})
     counts = (df["T2M_MAX"] > threshold).groupby(df.index.year).sum().astype(int)
     return counts.rename("hot_days"), st

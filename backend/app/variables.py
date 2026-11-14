@@ -12,10 +12,10 @@ VARIABLES = {
                     reason="Daily peaks show heat stress that averages can hide."),
     "PRECTOTCORR": dict(kind="power", col="PRECTOTCORR", label="Rainfall", unit="mm/day", noun="rain",
                         reason="Rain is what refills the land. If a place is drying up, rainfall is the first suspect."),
-    "GWETROOT": dict(kind="power", col="GWETROOT", label="Root-zone soil moisture", unit="fraction (0-1)",
+    "GWETROOT": dict(kind="power", col="GWETROOT", label="Root-zone soil moisture", unit="soil-wetness index (0-1)",
                      noun="water in the soil under the roots",
                      reason="Soil moisture shows whether the ground still holds water for plants."),
-    "GWETTOP": dict(kind="power", col="GWETTOP", label="Surface soil moisture", unit="fraction (0-1)",
+    "GWETTOP": dict(kind="power", col="GWETTOP", label="Surface soil moisture", unit="soil-wetness index (0-1)",
                     noun="water in the topsoil", reason="The top layer of soil reacts fastest to rain and heat."),
     "RH2M": dict(kind="power", col="RH2M", label="Humidity", unit="%", noun="humidity",
                  reason="Dry air speeds up evaporation."),
@@ -27,6 +27,13 @@ VARIABLES = {
                  start_year=2000),
     "HOT_DAYS": dict(kind="power_daily", col="hot_days", label="Very hot days", unit="days/year above 35 °C",
                      noun="days above 35 °C", reason="Counting extreme-heat days shows how often the heat bites."),
+}
+
+# Honest provenance, appended to the witness `source` and to the expert `test_on` text (types.ts has no separate note field).
+SOURCE_NOTE = {
+    "GWETROOT": "model soil-wetness index (MERRA-2 via POWER)",
+    "GWETTOP": "model soil-wetness index (MERRA-2 via POWER)",
+    "PRECTOTCORR": "MERRA-2 reanalysis, ~0.5 deg cell: may read higher than a local station",
 }
 
 # What a general audience calls each variable (used in "No clear change in <plain> since 2000 — could be chance").
