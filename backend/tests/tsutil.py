@@ -13,7 +13,14 @@ TSC = ROOT / "frontend" / "node_modules" / ".bin" / ("tsc.cmd" if shutil.which("
 def ts_keys(interface: str):
     """(required, optional) top-level keys of `export interface <interface> { ... }` in types.ts."""
     src = TYPES_TS.read_text(encoding="utf-8")
-    block = src.split(f"export interface {interface} {{")[1].split("\n}")[0]
+    rest = src.split(f"export interface {interface} {{")[1]
+    depth, end = 1, 0
+    for i, ch in enumerate(rest):          # matching closing brace: also right for one-line interfaces like TwistSide
+        depth += (ch == "{") - (ch == "}")
+        if depth == 0:
+            end = i
+            break
+    block = rest[:end]
     req, opt = set(), set()
     for ln in block.splitlines():
         ln = ln.split("//")[0]

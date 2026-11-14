@@ -727,5 +727,17 @@
   "power_monthly_34.00_40.00_1981_2025": {
     "fetched": "2026-11-14T20:05:28+00:00",
     "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=40.0&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_32.00_36.50_1981_2025": {
+    "fetched": "2026-11-14T20:19:04+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=32.0&longitude=36.5"
+  },
+  "power_monthly_53.65_18.73_1981_2025": {
+    "fetched": "2026-11-14T20:19:10+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=53.6462325&longitude=18.7290468&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_53.65_18.73_1981_2025": {
+    "fetched": "2026-11-14T20:19:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&latitude=53.6462325&longitude=18.7290468"
   }
 }

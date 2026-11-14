@@ -79,9 +79,16 @@ async function tryGet<T>(url: string): Promise<T | null> {
   return null;
 }
 
-export async function getGrid(variable: VariableId, bbox: [number, number, number, number], ctx: CaseResponse): Promise<GridResponse> {
-  const real = await tryGet<GridResponse>(`/api/grid?variable=${variable}&bbox=${bbox.join(",")}`);
-  if (real) return real;
+// Real grid, or null when the backend is reachable but has no grid for this variable (e.g. NDVI, very hot days).
+// The labelled mock is used only when VITE_USE_MOCK is on or the backend cannot be reached at all.
+export async function getGrid(variable: VariableId, bbox: [number, number, number, number], ctx: CaseResponse): Promise<GridResponse | null> {
+  if (!USE_MOCK) {
+    try {
+      const res = await fetch(`/api/grid?variable=${variable}&bbox=${bbox.join(",")}`);
+      if (res.ok && (res.headers.get("content-type") ?? "").includes("json")) return (await res.json()) as GridResponse;
+      return null; // reachable, but no real grid for this variable: never fake one
+    } catch { /* unreachable: fall through to the simulated grid */ }
+  }
   await new Promise((r) => setTimeout(r, 250));
   return mockGrid(variable, bbox, ctx);
 }

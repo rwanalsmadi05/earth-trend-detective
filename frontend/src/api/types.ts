@@ -37,7 +37,10 @@ export interface ExpertItem {
   baseline: number;
   tau: number; p: number; sen_per_decade: number;
 }
-export interface SatImage { date: string; url: string; }
+export interface SatImage {
+  date: string; url: string;
+  bbox?: [number, number, number, number]; // west, south, east, north of the photo (EPSG:4326); lets the UI place the location marker exactly
+}
 
 export interface CaseResponse {
   case_id: string;

@@ -3,6 +3,7 @@
 const bbox = "31.4,36.4,32.4,37.4"; // s,w,n,e around Azraq
 const sat = (date: string): SatImage => ({
   date,
+  bbox: [36.4, 31.4, 37.4, 32.4], // west, south, east, north (matches BBOX in the URL below)
   url: `https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=${date}&BBOX=${bbox}&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500`,
 });
 

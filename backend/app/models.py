@@ -226,3 +226,21 @@ class LifetimeResponse(BaseModel):
     years: int
     items: list[LifetimeItem]
     data_label: DataLabel2
+
+
+# ---- GET /game/round (mirrors GameRound in frontend/src/api/types.ts) ---------------------------------------------
+class GameRound(BaseModel):
+    variable: VariableId
+    label: str
+    unit: str
+    place: LifetimePlace
+    period: Period
+    series: list[SeriesPoint]
+    verdict: Verdict
+    p: float
+    tau: float
+    sen_per_decade: float
+    n: int
+    borderline: bool | None = None
+    explanation: str
+    data_label: DataLabel2

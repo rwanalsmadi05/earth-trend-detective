@@ -1,6 +1,6 @@
 ﻿import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import type { CaseResponse, ExpertItem, Witness } from "../api/types";
+import type { CaseResponse, ExpertItem, SatImage, Witness } from "../api/types";
 import { bigNumber } from "../lib/format";
 import Stamp from "./Stamp";
 import Detail from "./Detail";
@@ -12,10 +12,22 @@ const MAX = 5;
 const TILT = [-2.5, 1.8, -1.5, 2.5, -2];
 const STAGGER = [0, 26, 6, 30, 4]; // px: slight vertical stagger so the row looks hand-pinned
 
-// The photo is requested centred on the case location, so the marker sits at its centre.
-function Crosshair() {
+// Where the case location falls inside a photo, as % of the displayed frame (which is cropped with object-cover).
+// Uses the photo's own bbox [w,s,e,n] when the backend sends it; otherwise assumes the photo is centred on the place.
+const FRAME = 6 / 5; // frame aspect (aspect-[6/5])
+function placeInPhoto(bbox: SatImage["bbox"], lat: number, lon: number, natural: { w: number; h: number } | null) {
+  const fx = bbox ? (lon - bbox[0]) / (bbox[2] - bbox[0]) : 0.5;
+  const fy = bbox ? (bbox[3] - lat) / (bbox[3] - bbox[1]) : 0.5;
+  const ia = natural ? natural.w / natural.h : FRAME;
+  let x = fx, y = fy;
+  if (ia > FRAME) x = 0.5 + (fx - 0.5) * (ia / FRAME);       // photo wider than the frame: cropped left/right
+  else if (ia < FRAME) y = 0.5 + (fy - 0.5) * (FRAME / ia);  // photo taller than the frame: cropped top/bottom
+  return { x: x * 100, y: y * 100, visible: x >= 0 && x <= 1 && y >= 0 && y <= 1 };
+}
+
+function Crosshair({ x, y }: { x: number; y: number }) {
   return (
-    <svg className="pointer-events-none absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2" viewBox="-18 -18 36 36" fill="none" aria-label="case location">
+    <svg className="pointer-events-none absolute h-9 w-9 -translate-x-1/2 -translate-y-1/2" style={{ left: `${x}%`, top: `${y}%` }} viewBox="-18 -18 36 36" fill="none" aria-label="case location">
       <title>Case location</title>
       {[["#000", 3.2, 0.55], ["#FF8A3D", 1.5, 1]].map(([c, w, o]) => (
         <g key={String(c)} stroke={c as string} strokeWidth={w as number} opacity={o as number} strokeLinecap="round">
@@ -28,13 +40,15 @@ function Crosshair() {
   );
 }
 
-function Polaroid({ w, i, ex, compact, onOpen }: { w: Witness; i: number; ex?: ExpertItem; compact: boolean; onOpen: () => void }) {
+function Polaroid({ w, i, ex, compact, place, onOpen }: { w: Witness; i: number; ex?: ExpertItem; compact: boolean; place: { lat: number; lon: number }; onOpen: () => void }) {
+  const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
   const [after, setAfter] = useState(true);
   const [broken, setBroken] = useState(false);
   const img = after ? w.images?.after : w.images?.before;
   const hasImg = !!img?.url && !broken; // no photo (or it failed to load) -> show the series instead of an empty frame
   const borderline = !!ex?.borderline && w.verdict === "CONFIRMED"; // flag comes from the backend (POST /case/expert)
   const big = bigNumber(w);
+  const pos = placeInPhoto(img?.bbox, place.lat, place.lon, natural);
   const tone = w.direction === "up" ? "text-[#1f78b4]" : "text-[#d4560e]";
   return (
     <motion.button type="button" onClick={onOpen}
@@ -46,11 +60,11 @@ function Polaroid({ w, i, ex, compact, onOpen }: { w: Witness; i: number; ex?: E
       <div className="relative aspect-[6/5] overflow-hidden bg-slate-800">
         {hasImg ? (
           <>
-            <img src={img!.url} alt={`${w.label} satellite ${img!.date}`} loading="lazy" className="h-full w-full object-cover" onError={() => setBroken(true)} />
+            <img src={img!.url} alt={`${w.label} satellite ${img!.date}`} loading="lazy" className="h-full w-full object-cover" onLoad={(e) => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })} onError={() => setBroken(true)} />
             <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1 font-mono text-[9px] text-paper">NASA GIBS · {img!.date}</span>
             <span role="button" onClick={(e) => { e.stopPropagation(); setAfter(!after); }}
               className="absolute right-1 top-1 rounded bg-black/60 px-1.5 py-0.5 font-mono text-[9px] text-paper hover:bg-black/80">{after ? "NOW" : "THEN"} ⇄</span>
-            <Crosshair />
+            {pos.visible && <Crosshair x={pos.x} y={pos.y} />}
           </>
         ) : (
           <div className="flex h-full flex-col justify-center bg-[#0c1017] p-2"><Chart w={w} /><span className="font-mono text-[9px] text-paper/50">{w.label} · yearly anomaly, no photo</span></div>
@@ -196,7 +210,7 @@ export default function EvidenceBoard({ data, onPick }: { data: CaseResponse; on
                 style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))`, maxWidth: n < 4 ? n * 300 : undefined }}>
                 {shown.map((w, i) => (
                   <div key={w.variable} ref={(el) => { slotRefs.current[i] = el; }} style={{ marginTop: STAGGER[i] }}>
-                    <Polaroid w={w} i={i} compact={compact} ex={data.expert?.[w.variable]} onOpen={() => setOpen(w)} />
+                    <Polaroid w={w} i={i} compact={compact} place={data.place} ex={data.expert?.[w.variable]} onOpen={() => setOpen(w)} />
                   </div>
                 ))}
               </div>
@@ -245,7 +259,7 @@ export default function EvidenceBoard({ data, onPick }: { data: CaseResponse; on
             {/* ---------- mobile: swipeable stack ---------- */}
             <div className="relative z-[2] flex snap-x snap-mandatory gap-4 overflow-x-auto p-6 pt-12 lg:hidden">
               {shown.map((w, i) => (
-                <div key={w.variable} className="w-[78%] shrink-0 snap-center"><Polaroid w={w} i={i} compact={false} ex={data.expert?.[w.variable]} onOpen={() => setOpen(w)} /></div>
+                <div key={w.variable} className="w-[78%] shrink-0 snap-center"><Polaroid w={w} i={i} compact={false} place={data.place} ex={data.expert?.[w.variable]} onOpen={() => setOpen(w)} /></div>
               ))}
             </div>
             <div className="relative z-[2] px-6 pb-8 lg:hidden"><NextNote onPick={onPick} /></div>

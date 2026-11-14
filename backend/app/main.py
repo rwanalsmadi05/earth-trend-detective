@@ -6,11 +6,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from . import cache, grid, i18n, lifetime as lifetime_mod, planner
+from . import cache, game as game_mod, grid, i18n, lifetime as lifetime_mod, planner
 from . import explain as explain_mod
 from .case_builder import PlaceNotFound, build_case_and_expert
-from .models import (CaseRequest, CaseResponse, ExpertResponse, ExplainResponse, GridResponse, LifetimeResponse,
+from .models import (CaseRequest, CaseResponse, ExpertResponse, ExplainResponse, GameRound, GridResponse, LifetimeResponse,
                      PlanResponse, TwistResponse)
+from .variables import VARIABLES
 
 app = FastAPI(title="Earth Trend Detective")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -100,6 +101,26 @@ def get_lifetime(place: str, birth_year: int):
         return lifetime_mod.lifetime(place, birth_year)
     except PlaceNotFound as e:
         raise HTTPException(422, str(e))
+    except Exception as e:  # noqa: BLE001  (network down and nothing cached)
+        raise HTTPException(503, f"data unavailable: {e}")
+
+
+@app.get("/game/round", response_model=GameRound, response_model_exclude_none=True)
+def get_game_round(case_id: str, want: str | None = None, exclude: str = ""):
+    """One 'Real or noise?' round: a real series with its real verdict. want = CONFIRMED | NOT PROVEN (optional);
+    exclude = comma-separated variable ids already used. 404 if no real series matches."""
+    if want is not None and want not in ("CONFIRMED", "NOT PROVEN"):
+        raise HTTPException(422, "want must be CONFIRMED or NOT PROVEN")
+    skip = [x.strip() for x in exclude.split(",") if x.strip()]
+    bad = [x for x in skip if x not in VARIABLES]
+    if bad:
+        raise HTTPException(422, f"unknown variable id(s) in exclude: {', '.join(bad)}")
+    try:
+        return game_mod.game_round(case_id, want, skip)
+    except KeyError:
+        raise HTTPException(404, f"unknown case_id {case_id!r}")
+    except game_mod.NoRound as e:
+        raise HTTPException(404, str(e))
     except Exception as e:  # noqa: BLE001  (network down and nothing cached)
         raise HTTPException(503, f"data unavailable: {e}")
 
