@@ -15,14 +15,6 @@
     "fetched": "2026-11-14T18:47:23+00:00",
     "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2024-08-15&BBOX=31.4,36.3,32.4,37.4&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500"
   },
-  "power_monthly_-32.02_-63.97_1981_2025": {
-    "fetched": "2026-11-14T19:30:00+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=-32.022249&longitude=-63.9698736&start=1981&end=2025&format=JSON"
-  },
-  "power_daily_t2mmax_-32.02_-63.97_1981_2025": {
-    "fetched": "2026-11-14T19:30:01+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=-32.022249&longitude=-63.9698736&start=19810101&end=20251231&format=JSON"
-  },
   "gibs_capabilities.xml": {
     "fetched": "2026-11-14T19:30:58+00:00",
     "url": "https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/1.0.0/WMTSCapabilities.xml"
@@ -46,22 +38,6 @@
       "Coastlines_15m"
     ],
     "date": "2025-04-01"
-  },
-  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_wetland_2001-03-15.jpg": {
-    "fetched": "2026-11-14T19:43:09+00:00",
-    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-15&BBOX=31.6800,36.5900,32.0800,37.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
-    "layers": [
-      "MODIS_Terra_CorrectedReflectance_TrueColor"
-    ],
-    "date": "2001-03-15"
-  },
-  "img_azraq_MODIS_Terra_CorrectedReflectance_TrueColor_m03_wetland_2025-03-15.jpg": {
-    "fetched": "2026-11-14T19:43:10+00:00",
-    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=31.6800,36.5900,32.0800,37.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
-    "layers": [
-      "MODIS_Terra_CorrectedReflectance_TrueColor"
-    ],
-    "date": "2025-03-15"
   },
   "img_azraq_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m03_region_2016-03-15.jpg": {
     "fetched": "2026-11-14T19:43:11+00:00",
@@ -187,22 +163,6 @@
   "power_daily_t2mmax_32.55_35.85_1981_2025": {
     "fetched": "2026-11-14T19:55:35+00:00",
     "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.55&longitude=35.85&start=19810101&end=20251231&format=JSON"
-  },
-  "power_monthly_30.25_35.25_1981_2025": {
-    "fetched": "2026-11-14T19:57:19+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=30.25&longitude=35.25&start=1981&end=2025&format=JSON"
-  },
-  "power_daily_t2mmax_30.25_35.25_1981_2025": {
-    "fetched": "2026-11-14T19:57:20+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=30.25&longitude=35.25&start=19810101&end=20251231&format=JSON"
-  },
-  "power_monthly_32.56_35.85_1981_2025": {
-    "fetched": "2026-11-14T19:59:38+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.556&longitude=35.85&start=1981&end=2025&format=JSON"
-  },
-  "power_daily_t2mmax_32.56_35.85_1981_2025": {
-    "fetched": "2026-11-14T19:59:40+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.556&longitude=35.85&start=19810101&end=20251231&format=JSON"
   },
   "power_monthly_29.00_35.00_1981_2025": {
     "fetched": "2026-11-14T20:04:43+00:00",
@@ -728,16 +688,595 @@
     "fetched": "2026-11-14T20:05:28+00:00",
     "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=34.0&longitude=40.0&start=1981&end=2025&format=JSON"
   },
-  "power_daily_t2mmax_32.00_36.50_1981_2025": {
-    "fetched": "2026-11-14T20:19:04+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.0&longitude=36.5&start=19810101&end=20251231&format=JSON"
+  "img_irbid_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-15T07:31:00+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
   },
-  "power_monthly_53.65_18.73_1981_2025": {
-    "fetched": "2026-11-14T20:19:10+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=53.6462325&longitude=18.7290468&start=1981&end=2025&format=JSON"
+  "img_irbid_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m08_region_2025-08-01.jpg": {
+    "fetched": "2026-11-15T07:31:01+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-08-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-08-01"
   },
-  "power_daily_t2mmax_53.65_18.73_1981_2025": {
-    "fetched": "2026-11-14T20:19:11+00:00",
-    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=53.6462325&longitude=18.7290468&start=19810101&end=20251231&format=JSON"
+  "img_irbid_MODIS_Terra_CorrectedReflectance_TrueColor_m08_region_2001-08-15.jpg": {
+    "fetched": "2026-11-15T07:31:01+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-08-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-08-15"
+  },
+  "img_irbid_MODIS_Terra_CorrectedReflectance_TrueColor_m08_region_2025-08-15.jpg": {
+    "fetched": "2026-11-15T07:31:02+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-08-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-08-15"
+  },
+  "img_irbid_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-15T07:31:04+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_irbid_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m08_region_2001-08-01.jpg": {
+    "fetched": "2026-11-15T07:31:34+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-08-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-08-01"
+  },
+  "img_irbid_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m02_region_2025-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:09+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-02-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-02-15"
+  },
+  "img_irbid_SMAP_L4_Analyzed_Surface_Soil_Moisture_m02_region_2025-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:19+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-02-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-02-15"
+  },
+  "img_irbid_MODIS_Terra_CorrectedReflectance_TrueColor_m02_oasis_2025-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:25+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-02-15&BBOX=32.0500,35.2500,33.0500,36.4500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-02-15"
+  },
+  "power_monthly_31.50_35.47_1981_2025": {
+    "fetched": "2026-11-15T08:04:26+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.5&longitude=35.47&start=1981&end=2025&format=JSON"
+  },
+  "img_irbid_MODIS_Terra_CorrectedReflectance_TrueColor_m02_oasis_2001-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:27+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-02-15&BBOX=32.0500,35.2500,33.0500,36.4500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-02-15"
+  },
+  "power_daily_t2mmax_31.50_35.47_1981_2025": {
+    "fetched": "2026-11-15T08:04:28+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=31.5&longitude=35.47&start=19810101&end=20251231&format=JSON"
+  },
+  "img_irbid_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m02_region_2016-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:30+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-02-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-02-15"
+  },
+  "img_deadsea_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-15T08:04:37+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_irbid_SMAP_L4_Analyzed_Surface_Soil_Moisture_m02_region_2016-02-15.jpg": {
+    "fetched": "2026-11-15T08:04:48+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-02-15&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-02-15"
+  },
+  "img_deadsea_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-15T08:04:55+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
+  },
+  "img_deadsea_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2001-07-01.jpg": {
+    "fetched": "2026-11-15T08:05:07+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-07-01"
+  },
+  "img_deadsea_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2025-07-01.jpg": {
+    "fetched": "2026-11-15T08:05:09+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-07-01"
+  },
+  "img_deadsea_MODIS_Terra_CorrectedReflectance_TrueColor_m03_oasis_2001-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:10+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-15&BBOX=31.0000,34.8700,32.0000,36.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-03-15"
+  },
+  "img_deadsea_MODIS_Terra_CorrectedReflectance_TrueColor_m03_oasis_2025-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:13+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=31.0000,34.8700,32.0000,36.0700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_deadsea_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m03_region_2016-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:22+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-03-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-03-15"
+  },
+  "img_deadsea_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m03_region_2025-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:25+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_deadsea_SMAP_L4_Analyzed_Surface_Soil_Moisture_m03_region_2016-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:33+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-03-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-03-15"
+  },
+  "img_deadsea_SMAP_L4_Analyzed_Surface_Soil_Moisture_m03_region_2025-03-15.jpg": {
+    "fetched": "2026-11-15T08:05:36+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-15"
+  },
+  "img_deadsea_MODIS_Terra_L3_NDVI_Monthly_m03_region_2001-03-01.jpg": {
+    "fetched": "2026-11-15T08:05:37+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-03-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2001-03-01"
+  },
+  "img_deadsea_MODIS_Terra_L3_NDVI_Monthly_m03_region_2025-03-01.jpg": {
+    "fetched": "2026-11-15T08:05:39+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-03-01&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2025-03-01"
+  },
+  "img_deadsea_MODIS_Terra_CorrectedReflectance_TrueColor_m07_region_2025-07-15.jpg": {
+    "fetched": "2026-11-15T08:05:44+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-07-15"
+  },
+  "img_deadsea_MODIS_Terra_CorrectedReflectance_TrueColor_m07_region_2001-07-15.jpg": {
+    "fetched": "2026-11-15T08:05:45+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-15&BBOX=29.0000,32.4700,34.0000,38.4700&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-07-15"
+  },
+  "img_irbid_MODIS_Terra_L3_NDVI_Monthly_m02_region_2001-02-01.jpg": {
+    "fetched": "2026-11-15T08:05:53+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-02-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2001-02-01"
+  },
+  "img_irbid_MODIS_Terra_L3_NDVI_Monthly_m02_region_2025-02-01.jpg": {
+    "fetched": "2026-11-15T08:06:00+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-02-01&BBOX=30.0500,32.8500,35.0500,38.8500&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_NDVI_Monthly,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_NDVI_Monthly",
+      "Coastlines_15m"
+    ],
+    "date": "2025-02-01"
+  },
+  "power_monthly_31.90_36.80_1981_2025": {
+    "fetched": "2026-11-15T08:09:46+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=31.9&longitude=36.8&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_31.90_36.80_1981_2025": {
+    "fetched": "2026-11-15T08:09:46+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=31.9&longitude=36.8&start=19810101&end=20251231&format=JSON"
+  },
+  "img_custom_31.90_36.80_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-15T08:09:47+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=29.4000,33.8000,34.4000,39.8000&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_custom_31.90_36.80_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-15T08:09:47+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=29.4000,33.8000,34.4000,39.8000&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
+  },
+  "power_monthly_24.31_1.46_1981_2025": {
+    "fetched": "2026-11-15T08:28:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=24.31&longitude=1.46&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_24.31_1.46_1981_2025": {
+    "fetched": "2026-11-15T08:28:19+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=24.31&longitude=1.46&start=19810101&end=20251231&format=JSON"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-15T08:28:21+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-15T08:28:21+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_CorrectedReflectance_TrueColor_m09_oasis_2025-09-15.jpg": {
+    "fetched": "2026-11-15T08:28:22+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-15&BBOX=23.8100,0.8600,24.8100,2.0600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-09-15"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_CorrectedReflectance_TrueColor_m09_oasis_2001-09-15.jpg": {
+    "fetched": "2026-11-15T08:28:23+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-09-15&BBOX=23.8100,0.8600,24.8100,2.0600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-09-15"
+  },
+  "img_custom_24.31_1.46_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m09_region_2016-09-15.jpg": {
+    "fetched": "2026-11-15T08:28:23+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-09-15&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-09-15"
+  },
+  "img_custom_24.31_1.46_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m09_region_2025-09-15.jpg": {
+    "fetched": "2026-11-15T08:28:24+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-15&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-09-15"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2001-07-01.jpg": {
+    "fetched": "2026-11-15T08:28:24+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-01&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-07-01"
+  },
+  "img_custom_24.31_1.46_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2025-07-01.jpg": {
+    "fetched": "2026-11-15T08:28:25+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-01&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-07-01"
+  },
+  "power_monthly_23.69_5.15_1981_2025": {
+    "fetched": "2026-11-15T08:28:28+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=23.6909781&longitude=5.1509553&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_23.69_5.15_1981_2025": {
+    "fetched": "2026-11-15T08:28:30+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=23.6909781&longitude=5.1509553&start=19810101&end=20251231&format=JSON"
+  },
+  "img_custom_24.31_1.46_SMAP_L4_Analyzed_Surface_Soil_Moisture_m09_region_2025-09-15.jpg": {
+    "fetched": "2026-11-15T08:29:00+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-15&BBOX=21.8100,-1.5400,26.8100,4.4600&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Surface_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-09-15"
+  },
+  "power_daily_t2mmax_27.48_-26.42_1981_2025": {
+    "fetched": "2026-11-15T08:29:37+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=27.48&longitude=-26.42&start=19810101&end=20251231&format=JSON"
+  },
+  "power_monthly_27.48_-26.42_1981_2025": {
+    "fetched": "2026-11-15T08:29:37+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=27.48&longitude=-26.42&start=1981&end=2025&format=JSON"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m06_region_2001-06-01.jpg": {
+    "fetched": "2026-11-15T08:29:38+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-06-01&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-06-01"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m06_region_2025-06-01.jpg": {
+    "fetched": "2026-11-15T08:29:39+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-06-01&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-06-01"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_CorrectedReflectance_TrueColor_m12_oasis_2001-12-15.jpg": {
+    "fetched": "2026-11-15T08:29:40+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-12-15&BBOX=26.9800,-27.0200,27.9800,-25.8200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-12-15"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_CorrectedReflectance_TrueColor_m12_oasis_2025-12-15.jpg": {
+    "fetched": "2026-11-15T08:29:40+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-12-15&BBOX=26.9800,-27.0200,27.9800,-25.8200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-12-15"
+  },
+  "img_custom_27.48_-26.42_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m12_region_2016-12-15.jpg": {
+    "fetched": "2026-11-15T08:29:41+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-12-15&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-12-15"
+  },
+  "img_custom_27.48_-26.42_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m12_region_2025-12-15.jpg": {
+    "fetched": "2026-11-15T08:29:43+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-12-15&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-12-15"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m09_region_2001-09-01.jpg": {
+    "fetched": "2026-11-15T08:29:43+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-09-01&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-09-01"
+  },
+  "img_custom_27.48_-26.42_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m09_region_2025-09-01.jpg": {
+    "fetched": "2026-11-15T08:29:44+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-01&BBOX=24.9800,-29.4200,29.9800,-23.4200&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-09-01"
+  },
+  "power_monthly_48.37_-84.43_1981_2025": {
+    "fetched": "2026-11-15T08:29:51+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=48.3694033&longitude=-84.4266015&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_48.37_-84.43_1981_2025": {
+    "fetched": "2026-11-15T08:29:52+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=48.3694033&longitude=-84.4266015&start=19810101&end=20251231&format=JSON"
+  },
+  "power_monthly_32.56_35.85_1981_2025": {
+    "fetched": "2026-11-15T08:34:57+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=32.56&longitude=35.85&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_32.56_35.85_1981_2025": {
+    "fetched": "2026-11-15T08:35:00+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=32.56&longitude=35.85&start=19810101&end=20251231&format=JSON"
+  },
+  "power_monthly_20.64_-5.98_1981_2025": {
+    "fetched": "2026-11-15T08:38:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=20.64&longitude=-5.98&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_20.64_-5.98_1981_2025": {
+    "fetched": "2026-11-15T08:38:02+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=20.64&longitude=-5.98&start=19810101&end=20251231&format=JSON"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2001-04-01.jpg": {
+    "fetched": "2026-11-15T08:38:04+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-04-01&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-04-01"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m04_region_2025-04-01.jpg": {
+    "fetched": "2026-11-15T08:38:04+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-04-01&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-04-01"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_CorrectedReflectance_TrueColor_m09_oasis_2001-09-15.jpg": {
+    "fetched": "2026-11-15T08:38:05+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-09-15&BBOX=20.1400,-6.5800,21.1400,-5.3800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2001-09-15"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_CorrectedReflectance_TrueColor_m09_oasis_2025-09-15.jpg": {
+    "fetched": "2026-11-15T08:38:05+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-15&BBOX=20.1400,-6.5800,21.1400,-5.3800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor"
+    ],
+    "date": "2025-09-15"
+  },
+  "img_custom_20.64_-5.98_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m09_region_2016-09-15.jpg": {
+    "fetched": "2026-11-15T08:38:06+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2016-09-15&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2016-09-15"
+  },
+  "img_custom_20.64_-5.98_SMAP_L4_Analyzed_Root_Zone_Soil_Moisture_m09_region_2025-09-15.jpg": {
+    "fetched": "2026-11-15T08:38:07+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-09-15&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,SMAP_L4_Analyzed_Root_Zone_Soil_Moisture,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "Coastlines_15m"
+    ],
+    "date": "2025-09-15"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2001-07-01.jpg": {
+    "fetched": "2026-11-15T08:38:08+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2001-07-01&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2001-07-01"
+  },
+  "img_custom_20.64_-5.98_MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day_m07_region_2025-07-01.jpg": {
+    "fetched": "2026-11-15T08:38:08+00:00",
+    "url": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2025-07-01&BBOX=18.1400,-8.9800,23.1400,-2.9800&CRS=EPSG:4326&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day,Coastlines_15m&FORMAT=image/jpeg&WIDTH=600&HEIGHT=500",
+    "layers": [
+      "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "MODIS_Terra_L3_Land_Surface_Temp_Monthly_Day",
+      "Coastlines_15m"
+    ],
+    "date": "2025-07-01"
+  },
+  "power_monthly_20.86_-3.40_1981_2025": {
+    "fetched": "2026-11-15T08:38:11+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,T2M_MAX,PRECTOTCORR,GWETROOT,GWETTOP,RH2M,ALLSKY_SFC_SW_DWN&community=AG&latitude=20.8582718&longitude=-3.39819&start=1981&end=2025&format=JSON"
+  },
+  "power_daily_t2mmax_20.86_-3.40_1981_2025": {
+    "fetched": "2026-11-15T08:38:13+00:00",
+    "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX&community=AG&latitude=20.8582718&longitude=-3.39819&start=19810101&end=20251231&format=JSON"
   }
 }
