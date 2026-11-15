@@ -273,16 +273,15 @@ def test_failed_images_are_retried_in_the_background_with_backoff_and_then_cache
 
 def test_retries_back_off_instead_of_hammering(live, monkeypatch):
     calls, opts = live
-    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (0.3, 0.6))
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (2.5, 5.0))                                       # far longer than a request takes
     opts["wvs_ok"] = False
     post(variables=("T2M",))
     after_first = calls["wvs"]
     assert after_first >= 1
-    time.sleep(0.15)
-    assert calls["wvs"] == after_first                                                                    # nothing retried before the first delay
     post(variables=("T2M",))
-    assert calls["wvs"] == after_first                                                                    # a new click does not start extra fetches
-    assert wait_until(lambda: calls["wvs"] > after_first, 2.0)                                           # the scheduled retry does happen
+    post(variables=("T2M",))
+    assert calls["wvs"] == after_first                                                                    # new clicks do not start extra fetches
+    assert wait_until(lambda: calls["wvs"] > after_first, 6.0)                                           # the scheduled retry does happen
 
 
 def test_retries_stop_after_the_last_backoff_step(live, monkeypatch):

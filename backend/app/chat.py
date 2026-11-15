@@ -53,7 +53,43 @@ def chat_context(case: dict, expert: dict) -> dict:
         w["method_used"], w["n_tested"] = expert[cw["variable"]]["method"], expert[cw["variable"]]["n_tested"]
     ctx["hints_on_the_board"] = [h["text"] for h in case["hints"]]
     ctx["method_notes"] = METHOD_NOTES
+    ctx.update(comparison_facts(case, expert))
+    ctx["app_help"] = APP_HELP
     return ctx
+
+
+# What the user can do next in the app (no numbers): used to answer "what should I check next?".
+APP_HELP = [
+    "Where map: shows whether the same trend appears in neighbouring places (one trend test per grid cell, with false-discovery-rate correction).",
+    "Pick the witnesses yourself: choose the variables, the period and the place on the map, without the AI.",
+    "Expert drawer: shows the test method, p, tau, Sen's slope and the data sources of every witness.",
+]
+
+
+def evidence_order(case: dict) -> list:
+    """Witnesses from the strongest to the weakest EVIDENCE: smallest p first (then larger |tau|)."""
+    return sorted(case["witnesses"], key=lambda w: (w["stats"]["p"], -abs(w["stats"]["tau"])))
+
+
+def size_order(case: dict) -> list:
+    """Witnesses from the biggest to the smallest change, relative to their own first-decade average (|pct_change|)."""
+    return sorted(case["witnesses"], key=lambda w: -abs(w["stats"]["pct_change"]))
+
+
+def comparison_facts(case: dict, expert: dict) -> dict:
+    """Precomputed comparisons, so the model (and the guards) never have to rank anything themselves."""
+    ev, sz = evidence_order(case), size_order(case)
+    return {
+        "ranking_by_evidence": [{"rank": i + 1, "variable": w["variable"], "label": w["label"], "p": w["stats"]["p"], "tau": w["stats"]["tau"],
+                                 "verdict": w["verdict"], "borderline": expert[w["variable"]]["borderline"]} for i, w in enumerate(ev)],
+        "ranking_by_size": [{"rank": i + 1, "variable": w["variable"], "label": w["label"],
+                             "pct_change_vs_first_decade": w["stats"]["pct_change"], "total_change": w["stats"]["total_change"],
+                             "unit": w["unit"]} for i, w in enumerate(sz)],
+        "borderline_witnesses": [w["label"] for w in case["witnesses"] if w["verdict"] == "CONFIRMED" and expert[w["variable"]]["borderline"]],
+        "not_proven_witnesses": [w["label"] for w in case["witnesses"] if w["verdict"] == "NOT PROVEN"],
+        "comparison_note": "Strength of evidence (smallest p) and size of change (relative to the first-decade average) are different "
+                           "things: the strongest evidence and the biggest change can be different witnesses.",
+    }
 
 
 _NUM = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)?(?:[eE][-+]?\d+)?")
@@ -104,6 +140,47 @@ def verdicts_ok(answer: str, case: dict) -> bool:
     return True
 
 
+SUPERLATIVES = (
+    ("top_evidence", ("strongest", "most significant", "most convincing", "clearest evidence", "best evidence", "most certain", "الأقوى", "أقوى")),
+    ("bottom_evidence", ("weakest", "least convincing", "least significant", "least certain", "الأضعف", "أضعف")),
+    ("top_size", ("biggest change", "largest change", "biggest relative change", "largest relative change", "most change", "أكبر تغيّر", "أكبر تغير")),
+)
+_CLAUSES = re.compile(r"[;,—،؛]|\b(?:while|but|whereas|and)\b")
+
+
+def _first_pos(low: str, w: dict) -> int:
+    """Where in `low` witness w is first named (a large number if it is not)."""
+    pos = [low.find(t) for t in _witness_terms(w) if t and t in low]
+    for k in KEYWORDS.get(w["variable"], ()):
+        k = gazetteer.norm(k)
+        m = re.search(r"(?<![a-z])" + re.escape(k) + r"(?:s|es|ed|ing)?(?![a-z])", low) if k.isascii() else None
+        if m:
+            pos.append(m.start())
+        elif not k.isascii() and k in low:
+            pos.append(low.find(k))
+    return min(pos) if pos else 10 ** 6
+
+
+def ranking_ok(answer: str, case: dict) -> bool:
+    """A superlative claim ("strongest", "weakest", "biggest change") must name the witness the computed ranking says.
+    Checked per clause: in the clause with the superlative, the first witness named is the one being claimed."""
+    if len(case["witnesses"]) < 2:
+        return True
+    ev, sz = evidence_order(case), size_order(case)
+    want = {"top_evidence": ev[0]["variable"], "bottom_evidence": ev[-1]["variable"], "top_size": sz[0]["variable"]}
+    for sent in re.split(r"(?<=[.!?؟])\s+|\n+", answer):
+        # "ordered from strongest to weakest" is an ORDER, not a claim that one witness is both
+        sent = re.sub(r"(?:strongest|weakest)\s+to\s+(?:strongest|weakest)|من\s+ال[أا]قوى\s+[إا]لى\s+ال[أا]ضعف|من\s+ال[أا]ضعف\s+[إا]لى\s+ال[أا]قوى", " ", sent.lower())
+        for clause in _CLAUSES.split(sent):
+            for kind, words in SUPERLATIVES:
+                if not any(w in clause for w in words):
+                    continue
+                named = [(_first_pos(clause, w), w["variable"]) for w in case["witnesses"] if _mentions(clause, w)]
+                if named and min(named)[1] != want[kind]:
+                    return False
+    return True
+
+
 def check(answer: str, case: dict, allowed: set, lang: str):
     """(ok, reason) for an LLM answer."""
     if not answer.strip() or len(answer) > MAX_ANSWER:
@@ -113,6 +190,8 @@ def check(answer: str, case: dict, allowed: set, lang: str):
         return False, f"number(s) not in the computed data: {', '.join(bad)}"
     if not verdicts_ok(answer, case):
         return False, "contradicts a computed verdict"
+    if not ranking_ok(answer, case):
+        return False, "contradicts the computed ranking"
     if i18n.detect_language(answer) != lang:
         return False, "not in the user's language"
     return True, None
@@ -120,7 +199,7 @@ def check(answer: str, case: dict, allowed: set, lang: str):
 
 # ---- rule-based answers (no LLM, or LLM answer rejected) -----------------------------------------------------------------
 KEYWORDS = {
-    "T2M": ("temperature", "warm", "warmer", "hotter", "heat", "degrees", "تسخن", "حرارة", "درجة", "دافئ"),
+    "T2M": ("temperature", "warm", "warmer", "hotter", "heat", "degrees", "سخن", "سخونة", "أحر", "حرارة", "درجة", "دافئ"),
     "T2M_MAX": ("maximum temperature", "daytime", "peak temperature", "العظمى"),
     "PRECTOTCORR": ("rain", "rainfall", "precipitation", "مطر", "أمطار", "امطار"),
     "GWETROOT": ("soil", "root", "moisture", "wetness", "تربة", "رطوبة"),
@@ -137,6 +216,37 @@ SUMMARY_WORDS = ("summary", "summarize", "summarise", "overall", "the result", "
 METHOD_WORDS = ("how sure", "how confident", "how reliable", "how do you know", "how did you", "how was this tested", "method",
                 "p-value", "p value", "significant", "significance", "borderline", "trust", "reliable", "اختبار", "طريقة", "دلالة", "موثوق", "متأكد")
 CHAIN_WORDS = ("cause", "caused", "causing", "correlat", "moved first", "lag", "سبب", "ارتباط", "أولا")
+# Comparing the case's witnesses, and "what should I look at next": in scope, answered from computed numbers. Phrases are
+# specific on purpose ("strongest" alone is also "the strongest man in the world"): a bare superlative counts only together
+# with a case term ("witness", "evidence", "trend", ...) or a witness's own keyword.
+RANK_PHRASES = ("which witness", "which witnesses", "which clue", "which clues", "which variable", "which one has the strongest",
+                "most convincing", "strongest evidence", "strongest witness", "strongest clue", "weakest witness", "weakest clue",
+                "weakest evidence", "most significant", "compare the witnesses", "compare witnesses", "how do the witnesses compare",
+                "how do they compare", "rank the", "ranking of", "compare the p-value", "compare p-value", "compare the evidence",
+                "أي شاهد", "أي دليل", "قارن بين الشهود", "قارن الأدلة", "مقارنة الشهود", "مقارنة الأدلة", "رتب الأدلة", "رتب الشهود")
+RANK_SUPERLATIVES = ("strongest", "weakest", "biggest", "largest", "أقوى", "أضعف", "أكبر")   # also match inside الأقوى / الأضعف / الأكبر
+CASE_TERMS = ("witness", "witnesses", "evidence", "clue", "clues", "trend", "trends", "finding", "findings", "p-value", "variable",
+              "variables", "شاهد", "شهود", "دليل", "أدلة", "اتجاه")
+NEXT_PHRASES = ("check next", "look at next", "look next", "what next", "next step", "next steps", "dig deeper", "investigate next",
+                "investigate further", "explore further", "explore next", "what else should i check", "what else should i look",
+                "what else should i investigate", "what should i investigate", "what should i explore", "what to check",
+                "what to look at", "where should i look", "where do i look", "ماذا أتحقق", "ماذا بعد", "الخطوة التالية",
+                "ماذا أفحص", "ما الذي أتحقق", "أين أنظر", "أين أبحث", "أتحقق منه بعد", "أتحقق بعد", "أفحص بعد", "أفحصه بعد",
+                "أنظر إليه بعد", "ماذا أفعل بعد")
+# Questions about the future or about other places are never answered from this case (without an LLM we cannot tell
+# "will it rain" from "how much less rain": so any forecast wording is refused, whatever variable it mentions).
+FORECAST_WORDS = ("tomorrow", "tonight", "this weekend", "next week", "next month", "next year", "forecast", "will it", "going to",
+                  "will there be", "in 2030", "in 2040", "in 2050", "by 2030", "by 2050", "غدا", "غداً", "الطقس", "توقعات", "الأسبوع القادم",
+                  "الأسبوع المقبل", "العام القادم", "السنة القادمة", "هل ستمطر", "هل سوف")
+
+
+def other_place_mentioned(case: dict, message: str) -> bool:
+    """True if the message names a known place that is not this case's place ("is it hotter in Irbid?")."""
+    hit = gazetteer.lookup(message, nominatim=False)
+    if not hit:
+        return False
+    mine = {gazetteer.norm(case["place"]["name"].split(",")[0].strip()), gazetteer.norm(case["place"].get("name_ar") or "")}
+    return gazetteer.norm(hit["name"]) not in mine and gazetteer.norm(hit["name_ar"]) not in mine
 
 
 def _has(low: str, words) -> bool:
@@ -181,14 +291,81 @@ def refusal(case: dict, lang: str) -> str:
     return f"I don't know that. I can only answer questions about this case ({place}, {a}–{b}) using the NASA data computed here."
 
 
+def _p(w: dict) -> str:
+    return f"{w['stats']['p']:.2g}"
+
+
+def ranking_template(loc: dict, expert: dict, lang: str) -> str:
+    """Which witness is strongest / weakest / biggest, from the computed numbers only. `loc` is the localized case."""
+    ws = loc["witnesses"]
+    ev, sz = evidence_order(loc), size_order(loc)
+    top, bot, big = ev[0], ev[-1], sz[0]
+    bord = lambda w: expert[w["variable"]]["borderline"]  # noqa: E731
+    if lang == "ar":
+        order = "؛ ".join(f"{w['label']} (p = {_p(w)}{'، حدّيّ' if bord(w) else ''})" for w in ev)
+        parts = [f"أقوى دليل: {top['label']} (p = {_p(top)}، tau = {top['stats']['tau']:.2f}).",
+                 f"ترتيب الأدلة من الأقوى إلى الأضعف: {order}."]
+        if len(ws) > 1:
+            parts.append(f"الأضعف: {bot['label']} (p = {_p(bot)}، {i18n.VERDICT_AR[bot['verdict']]}).")
+        parts += [f"أكبر تغيّر نسبةً إلى متوسطه في أول عقد: {big['label']} ({big['stats']['pct_change']:+.0f}%).",
+                  "قوة الدليل (قيمة p) وحجم التغيّر أمران مختلفان."]
+        return " ".join(parts)
+    order = "; ".join(f"{w['label']} (p = {_p(w)}{', borderline' if bord(w) else ''})" for w in ev)
+    parts = [f"Strongest evidence: {top['label']} (p = {_p(top)}, tau = {top['stats']['tau']:.2f}).",
+             f"In order of evidence, strongest to weakest: {order}."]
+    if len(ws) > 1:
+        parts.append(f"Weakest: {bot['label']} (p = {_p(bot)}, {bot['verdict']}).")
+    parts += [f"Biggest change relative to its own first-decade average: {big['label']} ({big['stats']['pct_change']:+.0f}%).",
+              "Strength of evidence (the p-value) and size of change are different things."]
+    return " ".join(parts)
+
+
+def next_steps_template(loc: dict, expert: dict, lang: str):
+    """What to look at next in THIS case: borderline and NOT PROVEN witnesses, the chain link, the Where map and the manual
+    picker. Returns (text, cited variables). Only computed numbers."""
+    ws = loc["witnesses"]
+    border = [w for w in ws if w["verdict"] == "CONFIRMED" and expert[w["variable"]]["borderline"]]
+    notp = [w for w in ws if w["verdict"] == "NOT PROVEN"]
+    link = loc["chain"][0] if loc["chain"] else None
+    lab = {w["variable"]: w["label"] for w in ws}
+    ar = lang == "ar"
+    s = []
+    if border:
+        b = border[0]
+        s.append(f"ابدأ بفحص {b['label']}: يجتاز الاختبار بالكاد (p = {_p(b)})، فاستخدم خريطة «أين يتغيّر؟» لترى هل تُظهر الأماكن المجاورة الاتجاه نفسه."
+                 if ar else f"Check {b['label']} first: it only just passes the test (p = {_p(b)}), so use the Where map to see whether neighbouring places show the same trend.")
+    if notp:
+        items = [f"{w['label']} (p = {_p(w)})" for w in notp[:2]]
+        s.append(f"{' و'.join(items)} غير مثبت: جرّب في «اختر الشهود بنفسك» فترة مختلفة أو متغيراً مرتبطاً قبل استخلاص نتيجة."
+                 if ar else f"{' and '.join(items)} {'is' if len(items) == 1 else 'are'} not proven: in \"Pick the witnesses yourself\" try a different period or a related variable before drawing conclusions.")
+    if link:
+        s.append(f"{lab[link['from']]} و{lab[link['to']]} يتحركان معاً بفارق {link['lag_months']} شهر (r = {link['r']:.2f})؛ تحقق في خريطة «أين يتغيّر؟» هل يتكرر النمط في أماكن أخرى (ارتباط وليس دليلاً على السبب)."
+                 if ar else f"{lab[link['from']]} and {lab[link['to']]} moved together with a lag of {link['lag_months']} months (r = {link['r']:.2f}); check on the Where map whether that pattern repeats elsewhere (correlation, not proof of cause).")
+    if not border and not notp:
+        s.append("كل الشهود مؤكَّدون: استخدم خريطة «أين يتغيّر؟» لترى إلى أين يمتد الاتجاه، و«اختر الشهود بنفسك» لاختبار متغير آخر."
+                 if ar else "Every witness is confirmed: use the Where map to see how far the trend reaches, and \"Pick the witnesses yourself\" to test another variable.")
+    if len(s) < 4:
+        s.append("درج الخبراء يعرض تفاصيل الاختبار لكل شاهد." if ar else "The expert drawer shows the test details for every witness.")
+    cited = list(dict.fromkeys([w["variable"] for w in border + notp] + ([link["from"], link["to"]] if link else [])))
+    return " ".join(s), cited or [w["variable"] for w in ws]
+
+
 def rules_answer(case: dict, expert: dict, message: str, lang: str, fallback_to_summary: bool = False):
     """(answer, in_scope, cited) built only from computed values."""
     if not case["witnesses"]:
         return refusal(case, lang), False, []
     low = gazetteer.norm(message)
     has = lambda words: _has(low, words)  # noqa: E731
-    tpl = template_explanation(localize(case, expert, lang), expert, lang)
+    loc = localize(case, expert, lang)
+    tpl = template_explanation(loc, expert, lang)
     hit = [w["variable"] for w in case["witnesses"] if has(KEYWORDS.get(w["variable"], ()))]
+    if has(FORECAST_WORDS) or other_place_mentioned(case, message):
+        return refusal(case, lang), False, []
+    if has(NEXT_PHRASES):
+        text, cited = next_steps_template(loc, expert, lang)
+        return text, True, cited
+    if has(RANK_PHRASES) or (has(RANK_SUPERLATIVES) and (has(CASE_TERMS) or hit)):
+        return ranking_template(loc, expert, lang), True, [w["variable"] for w in evidence_order(case)]
     if hit:
         return " ".join(tpl["witnesses"][v] for v in hit[:3]), True, hit[:3]
     everyone = [w["variable"] for w in case["witnesses"]]
@@ -208,8 +385,14 @@ def rules_answer(case: dict, expert: dict, message: str, lang: str, fallback_to_
 SYSTEM = """You are the AI partner of an Earth-science detective app. You answer a user's questions about ONE case whose
 results were ALREADY COMPUTED (JSON in the prompt). Rules, all mandatory:
 1. Use ONLY facts and numbers that appear in the JSON. Never invent, estimate, convert or round-to-a-new-value any number.
-   If the answer is not in the JSON (other places, other years, forecasts, causes, general knowledge, opinions, anything
-   else), set in_scope=false and say in one sentence that you don't know and can only answer about this case.
+   IN SCOPE (set in_scope=true and answer): questions about this case's results; COMPARING or RANKING its witnesses
+   ("which is the strongest / weakest / biggest?": use ranking_by_evidence (smallest p = strongest evidence) and
+   ranking_by_size (largest change relative to the first-decade average), and say that these can differ); and what to look at
+   NEXT in this case ("what should I check next?": point to a borderline or NOT PROVEN witness, the chain link if there is
+   one, the Where map (does the trend repeat in neighbouring places?), "Pick the witnesses yourself" (other variables or
+   periods) and the expert drawer, as listed in app_help, borderline_witnesses and not_proven_witnesses).
+   OUT OF SCOPE (set in_scope=false, say in one sentence that you don't know and can only answer about this case): other
+   places, other years, forecasts, weather, causes beyond the correlation shown, general knowledge, opinions, anything else.
 2. You never decide significance. A witness `verdict` is final: CONFIRMED means the trend test passed, NOT PROVEN means it
    did not (the change may be chance). Never say the opposite. If `borderline` is true, say it only just passes.
 3. Chain links are correlations, not causes: say so.
