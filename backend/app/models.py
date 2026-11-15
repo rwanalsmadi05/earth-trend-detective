@@ -1,6 +1,6 @@
 """Pydantic mirror of frontend/src/api/types.ts (POST /case). Keep field names and literals identical."""
 from typing import Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 VariableId = Literal["T2M", "T2M_MAX", "PRECTOTCORR", "GWETROOT", "GWETTOP", "RH2M",
                      "ALLSKY_SFC_SW_DWN", "NDVI", "HOT_DAYS"]
@@ -40,7 +40,7 @@ class Witness(BaseModel):
     source: str
     source_url: str
     start_year: int
-    images: Images
+    images: Images | None       # None when the NASA images are not available (yet): the UI shows a chart instead
     stats: Stats
     verdict: Verdict
     headline: str
@@ -92,11 +92,17 @@ class CaseResponse(BaseModel):
 class CaseRequest(BaseModel):
     question: str = ""
     variables: list[VariableId] | None = None   # manual "pick the witnesses yourself" selection (no LLM)
-    lat: float | None = None
-    lon: float | None = None
+    lat: float | None = Field(default=None, ge=-90, le=90)      # any point on Earth
+    lon: float | None = Field(default=None, ge=-180, le=180)
     place: str | None = None
     start: int | None = None
     end: int | None = None
+
+    @model_validator(mode="after")
+    def _both_or_neither(self):
+        if (self.lat is None) != (self.lon is None):
+            raise ValueError("give both lat and lon, or neither")
+        return self
 
 
 class ExpertItem(BaseModel):
@@ -244,3 +250,33 @@ class GameRound(BaseModel):
     borderline: bool | None = None
     explanation: str
     data_label: DataLabel2
+
+
+# ---- POST /chat (mirrors ChatMessage / ChatRequest / ChatResponse in frontend/src/api/types.ts) ----------------------
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(max_length=2000)
+
+
+class ChatPlace(BaseModel):
+    name: str
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+
+
+class ChatRequest(BaseModel):
+    """Enough to rebuild the case on the server (from the cache, or live for clicked places): the assistant only ever sees
+    numbers WE computed, never numbers sent by the client."""
+    case_id: str
+    message: str = Field(min_length=1, max_length=500)
+    history: list[ChatMessage] = Field(default_factory=list, max_length=20)
+    place: ChatPlace
+    variables: list[VariableId] = Field(min_length=1)
+    start: int
+    end: int
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    source: Literal["llm", "template", "mock"]
+    cited: list[VariableId] | None = None     # witnesses whose numbers the reply relied on

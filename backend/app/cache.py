@@ -2,6 +2,7 @@
 Pattern: use cache if present; otherwise fetch live and store; if the live fetch of a
 refresh fails, silently serve the stale cache."""
 import json
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 import pandas as pd
@@ -14,10 +15,14 @@ def _meta() -> dict:
     return json.loads(META.read_text("utf-8")) if META.exists() else {}
 
 
+_META_LOCK = threading.Lock()   # parallel fetches (monthly + daily + images) all stamp meta.json
+
+
 def _stamp(key: str, extra: dict | None = None):
-    m = _meta()
-    m[key] = {"fetched": datetime.now(timezone.utc).isoformat(timespec="seconds"), **(extra or {})}
-    META.write_text(json.dumps(m, indent=2), "utf-8")
+    with _META_LOCK:
+        m = _meta()
+        m[key] = {"fetched": datetime.now(timezone.utc).isoformat(timespec="seconds"), **(extra or {})}
+        META.write_text(json.dumps(m, indent=2), "utf-8")
 
 
 def meta_for(key: str) -> dict:

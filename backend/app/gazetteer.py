@@ -42,3 +42,14 @@ def lookup(query: str, nominatim: bool = True):
         except Exception:
             pass
     return None
+
+
+def nearest_place(lat: float, lon: float, max_km: float = 10.0):
+    """The built-in place closest to a point, if within max_km (so a click next to Azraq is simply 'Azraq')."""
+    import math
+    best, bd = None, 1e9
+    for en, ar, la, lo in PLACES:
+        d = 111.0 * math.hypot(la - lat, (lo - lon) * math.cos(math.radians((la + lat) / 2)))
+        if d < bd:
+            best, bd = {"name": en, "name_ar": ar, "lat": la, "lon": lo, "source": "gazetteer", "km": round(d, 1)}, d
+    return best if best and bd <= max_km else None

@@ -4,7 +4,11 @@ The plan (variables, reasons, place, cleaned question, language) comes from plan
 fallback); manual selection skips the planner. NDVI joins automatically when its cache is complete.
 Verdicts and every number come from stats.py, never from the LLM."""
 import os
-from . import cache, gazetteer, i18n, image_specs, planner, stats
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor, wait
+
+from . import cache, gazetteer, geocode, i18n, image_specs, planner, stats
 from .config import CASES, LAST_FULL_YEAR, START_YEAR
 from .planner import PlaceNotFound
 from .sources import gibs, modis, power
@@ -54,23 +58,110 @@ def _bbox_wsen(bbox):
     return [round(w, 4), round(s_, 4), round(e, 4), round(n, 4)]
 
 
-def _img(case_id, plan, day, layers):
-    """Cached local image if prefetched, else the direct Worldview URL (the browser then fetches it from NASA)."""
+def _img(case_id, plan, day):
     name = gibs.image_key(case_id, plan.tag, day)
-    if cache.blob_path(name).exists():
-        url = f"{API_PREFIX}/images/{name}"
-    else:
-        url = gibs.snapshot_url(plan.bbox, day, layers)
-    return {"date": day, "url": url, "bbox": _bbox_wsen(plan.bbox)}
+    return {"date": day, "url": f"{API_PREFIX}/images/{name}", "bbox": _bbox_wsen(plan.bbox)}
+
+
+def _plan_for(vid, lat, lon, clim):
+    try:
+        return image_specs.plan(vid, lat, lon, clim)
+    except Exception:  # noqa: BLE001  (capabilities unavailable / no listed date): plain true color
+        return image_specs.plan("RH2M", lat, lon, clim)
 
 
 def _witness_images(case_id, lat, lon, vid, clim):
-    """Each witness gets its own real NASA image pair (early vs recent) centred on the place; see image_specs.py."""
+    """Each witness gets its own real NASA image pair (early vs recent) centred on the place; see image_specs.py.
+    Returns None unless BOTH images are cached here: never a URL that may be broken (Worldview is often down for live
+    places), so the frontend shows its chart fallback. Missing images keep being fetched in the background."""
     try:
-        pl = image_specs.plan(vid, lat, lon, clim)
-    except Exception:  # noqa: BLE001  (capabilities unavailable / date not listed): plain true color
-        pl = image_specs.plan("RH2M", lat, lon, clim)
-    return {"before": _img(case_id, pl, pl.before, pl.layers_before), "after": _img(case_id, pl, pl.after, pl.layers_after)}
+        pl = _plan_for(vid, lat, lon, clim)
+    except Exception:  # noqa: BLE001
+        return None
+    names = [gibs.image_key(case_id, pl.tag, d) for d in (pl.before, pl.after)]
+    if not all(cache.blob_path(n).exists() for n in names):
+        return None
+    return {"before": _img(case_id, pl, pl.before), "after": _img(case_id, pl, pl.after)}
+
+
+IMAGE_BUDGET_S = 8        # a request waits at most this long for NASA images; the rest keep downloading in the background
+IMAGE_TIMEOUT_S = 10      # per attempt: fail fast (Worldview is sometimes slow or answers 503/429)
+RETRY_BACKOFF_S = (20, 60, 180, 600)   # background retries after a failed attempt (exponential-ish); then give up for COOLDOWN_S
+COOLDOWN_S = 300          # after the last retry failed, a later request may start over only after this long
+_IMG_POOL = ThreadPoolExecutor(max_workers=2)   # module-level: downloads continue (and get cached) after a request returns
+_img_lock = threading.Lock()
+_inflight: dict = {}      # image file name -> Future (shared by concurrent requests)
+_pending: set = set()     # image file names with a background retry scheduled
+_failed_at: dict = {}     # image file name -> time of last failure
+_timers: list = []        # scheduled retries (daemon timers); cancellable
+
+
+def shutdown_retries():
+    """Cancel every scheduled background retry and forget image state (used by tests and on shutdown)."""
+    with _img_lock:
+        for t in _timers:
+            t.cancel()
+        _timers.clear()
+        _pending.clear()
+        _failed_at.clear()
+        _inflight.clear()
+
+
+def _fetch_image(name, case_id, tag, bbox, day, layers, attempt=0):
+    ok = False
+    try:
+        gibs.snapshot(case_id, tag, bbox, day, layers, timeout=IMAGE_TIMEOUT_S, retries=1)
+        ok = True
+    except Exception:  # noqa: BLE001
+        pass
+    with _img_lock:
+        _inflight.pop(name, None)
+        if ok:
+            _pending.discard(name)
+            _failed_at.pop(name, None)
+            return
+        _failed_at[name] = time.monotonic()
+        if attempt < len(RETRY_BACKOFF_S):          # try again later, in the background, with growing delays
+            _pending.add(name)
+            t = threading.Timer(RETRY_BACKOFF_S[attempt], _retry, (name, case_id, tag, bbox, day, layers, attempt + 1))
+            t.daemon = True
+            _timers.append(t)
+            t.start()
+        else:
+            _pending.discard(name)
+
+
+def _retry(name, case_id, tag, bbox, day, layers, attempt):
+    with _img_lock:
+        if cache.blob_path(name).exists() or name in _inflight:
+            _pending.discard(name)
+            return
+        _inflight[name] = _IMG_POOL.submit(_fetch_image, name, case_id, tag, bbox, day, layers, attempt)
+
+
+def prefetch_images(case_id, lat, lon, vids, clim):
+    """Start downloading + caching the NASA images this case needs, wait a bounded time, return. Cached images are
+    skipped; downloads already running or already scheduled for a retry (another request, or an earlier failure) are not
+    started again, so a struggling service is never hammered. What is not cached when the case is assembled is simply
+    reported as images: null (and keeps being retried in the background, with backoff)."""
+    mine = []
+    now = time.monotonic()
+    for vid in vids:
+        try:
+            pl = _plan_for(vid, lat, lon, clim)
+        except Exception:  # noqa: BLE001
+            continue
+        for day, layers in ((pl.before, pl.layers_before), (pl.after, pl.layers_after)):
+            name = gibs.image_key(case_id, pl.tag, day)
+            if cache.blob_path(name).exists():
+                continue
+            with _img_lock:
+                if name in _inflight or name in _pending or now - _failed_at.get(name, -1e9) < COOLDOWN_S:
+                    continue
+                _inflight[name] = _IMG_POOL.submit(_fetch_image, name, case_id, pl.tag, pl.bbox, day, layers)
+                mine.append(_inflight[name])
+    if mine:
+        wait(mine, timeout=IMAGE_BUDGET_S)
 
 
 def _ndvi_if_cached(lat, lon):
@@ -141,7 +232,12 @@ def build_case_and_expert(question, variables=None, lat=None, lon=None, place=No
     """`plan` (planner.Plan) supplies place, variables, reasons, language and the cleaned question. Without a plan
     (manual selection / explicit coordinates) the place comes from the request or the gazetteer, reasons are templates."""
     if lat is not None and lon is not None:
-        pl = {"name": place or f"{lat:.2f}°N, {lon:.2f}°E", "name_ar": "", "lat": lat, "lon": lon}
+        lat, lon = round(lat, 2), round(lon, 2)       # one grid-cell precision: cache key, URLs and the place all agree
+        if place:
+            pl = {"name": place, "name_ar": "", "lat": lat, "lon": lon}
+        else:                                         # readable name for any point on Earth (gazetteer, cache, Nominatim)
+            g = geocode.name_for(lat, lon)
+            pl = {"name": g["name"], "name_ar": g["name_ar"], "lat": lat, "lon": lon}
     elif plan is not None:
         pl = {"name": plan.place["name"], "name_ar": plan.place.get("name_ar") or "", "lat": plan.place["lat"], "lon": plan.place["lon"]}
     else:
@@ -152,14 +248,15 @@ def build_case_and_expert(question, variables=None, lat=None, lon=None, place=No
     lang = plan.language if plan else i18n.detect_language(question)
     reasons = plan.reasons() if plan else {}
     cleaned = plan.cleaned_question if plan else planner.rules_clean(question)
+    if not plan and not question.strip():            # a click on the globe has no question: give the case a title
+        cleaned = f"What is changing in {pl['name']}?"
     lat, lon = pl["lat"], pl["lon"]
     if plan and not variables:
         variables = [v["variable"] for v in plan.variables]
     start = max(start or (plan.period["start"] if plan else START_YEAR), START_YEAR)
     end = min(end or (plan.period["end"] if plan else LAST_FULL_YEAR), LAST_FULL_YEAR)
 
-    power_df, st, key = power.monthly(lat, lon)
-    hot, st2 = power.hot_days_per_year(lat, lon)
+    power_df, st, key, hot, st2 = power.fetch_point(lat, lon)     # monthly + daily in parallel; cached after the first time
     clim = power_df  # full record: used to pick the image months
     power_df = power_df[(power_df.index.year >= start) & (power_df.index.year <= end)]
     hot = hot[(hot.index >= start) & (hot.index <= end)]
@@ -169,6 +266,7 @@ def build_case_and_expert(question, variables=None, lat=None, lon=None, place=No
 
     chosen = list(variables) if variables else DEFAULT_PLAN + (["NDVI"] if ndvi is not None else [])
     case_id = _case_id(lat, lon)
+    prefetch_images(case_id, lat, lon, [v for v in chosen if v != "NDVI" or ndvi is not None], clim)
 
     witnesses, anoms, expert = [], {}, {}
     for vid in chosen:
@@ -210,6 +308,10 @@ def build_case_and_expert(question, variables=None, lat=None, lon=None, place=No
             hints.append({"after": c["from"], "text": f"Notice: {labels[c['from']].lower()} {when} {labels[c['to']].lower()}. Correlation, not proof of cause: what else could link them?"})
         if any(w["variable"] == "NDVI" for w in witnesses):
             hints.append({"after": "NDVI", "text": "The satellite plant record only starts in 2000. A shorter record has less power to detect a trend."})
+
+    if "NDVI" in chosen and ndvi is None and witnesses:       # asked for, but NDVI is only prefetched for demo places
+        hints.append({"after": witnesses[0]["variable"],
+                      "text": "مؤشر NDVI غير متاح للأماكن المباشرة" if lang == "ar" else "NDVI not available for live places"})
 
     total = len(witnesses)
     k = sum(1 for w in witnesses if w["verdict"] == "CONFIRMED")

@@ -1,15 +1,16 @@
 """FastAPI app. Run: uvicorn app.main:app --port 8000 --reload   (frontend dev proxy forwards /api/* here)."""
 import re
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
 from dataclasses import asdict
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from . import cache, game as game_mod, grid, i18n, lifetime as lifetime_mod, planner
+from . import cache, chat as chat_mod, game as game_mod, grid, i18n, lifetime as lifetime_mod, planner
 from . import explain as explain_mod
 from .case_builder import PlaceNotFound, build_case_and_expert
-from .models import (CaseRequest, CaseResponse, ExpertResponse, ExplainResponse, GameRound, GridResponse, LifetimeResponse,
+from .models import (CaseRequest, CaseResponse, ChatRequest, ChatResponse, ExpertResponse, ExplainResponse, GameRound, GridResponse, LifetimeResponse,
                      PlanResponse, TwistResponse)
 from .variables import VARIABLES
 
@@ -22,7 +23,20 @@ def health():
     return {"ok": True}
 
 
+LIVE_BUDGET_S = 60   # a case may fetch NASA data live; after this the caller gets a clear 504, and what finished is cached
+_pool = ThreadPoolExecutor(max_workers=8)   # the work keeps running (and caching) after a timeout, so the retry is instant
+
+
 def _run(req: CaseRequest):
+    fut = _pool.submit(_run_inner, req)
+    try:
+        return fut.result(timeout=LIVE_BUDGET_S)
+    except FutureTimeout:
+        raise HTTPException(504, f"Fetching live NASA data is taking longer than {LIVE_BUDGET_S} s. "
+                                 "What has arrived is cached, so trying again in a moment is much faster.")
+
+
+def _run_inner(req: CaseRequest):
     try:
         manual = req.variables is not None or (req.lat is not None and req.lon is not None)
         plan = None if manual else planner.plan_question(req.question)   # Gemini, or the rule-based fallback
@@ -59,6 +73,20 @@ def post_case_explain(req: CaseRequest):
     """Plain-language explanation of the computed results. Numbers and verdicts are guarded in code (explain.py)."""
     case, expert = _run(req)
     return explain_mod.explain(case, expert["variables"], i18n.detect_language(req.question))
+
+
+@app.post("/chat", response_model=ChatResponse, response_model_exclude_none=True)
+def post_chat(req: ChatRequest):
+    """Ask about the CURRENT case. The case is rebuilt here from place + variables + period (cache, or live for clicked
+    places), so only numbers WE computed reach the assistant. Numbers and verdicts are guarded in code; anything outside
+    the case data gets an explicit "I don't know" in the language of the message."""
+    from .case_builder import _case_id
+    if _case_id(round(req.place.lat, 2), round(req.place.lon, 2)) != req.case_id:
+        raise HTTPException(422, "case_id does not match the place: /chat answers about the current case only")
+    case, expert = _run(CaseRequest(question="", variables=req.variables, lat=req.place.lat, lon=req.place.lon,
+                                    place=req.place.name, start=req.start, end=req.end))
+    out = chat_mod.answer(case, expert["variables"], req.message, [t.model_dump() for t in req.history])
+    return {"reply": out["answer"], "source": "llm" if out["source"] == "gemini" else "template", "cited": out["cited"]}
 
 
 @app.get("/grid", response_model=GridResponse)

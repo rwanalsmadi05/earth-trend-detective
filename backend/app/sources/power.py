@@ -1,4 +1,6 @@
 """NASA POWER monthly + daily point data (no auth)."""
+from concurrent.futures import ThreadPoolExecutor
+
 import numpy as np
 import pandas as pd
 from ..http import get
@@ -7,6 +9,8 @@ from .. import cache
 
 MONTHLY = "https://power.larc.nasa.gov/api/temporal/monthly/point"
 DAILY = "https://power.larc.nasa.gov/api/temporal/daily/point"
+LIVE_TIMEOUT_S = 30   # per attempt; a live click should fail clearly, not hang for minutes
+LIVE_RETRIES = 2
 
 
 def monthly_url(lat, lon, start=START_YEAR, end=LAST_FULL_YEAR):
@@ -16,7 +20,8 @@ def monthly_url(lat, lon, start=START_YEAR, end=LAST_FULL_YEAR):
 
 def _fetch_monthly(lat, lon, start, end) -> pd.DataFrame:
     js = get(MONTHLY, {"parameters": ",".join(POWER_PARAMS), "community": "AG", "latitude": lat,
-                       "longitude": lon, "start": start, "end": end, "format": "JSON"})
+                       "longitude": lon, "start": start, "end": end, "format": "JSON"},
+             retries=LIVE_RETRIES, timeout=LIVE_TIMEOUT_S)
     data = js["properties"]["parameter"]
     rows = {}
     for p, series in data.items():
@@ -50,7 +55,7 @@ def daily_url(lat, lon, start=START_YEAR, end=LAST_FULL_YEAR) -> str:
 
 
 def _fetch_daily(lat, lon, start, end) -> pd.DataFrame:
-    js = get(DAILY, daily_params(lat, lon, start, end))
+    js = get(DAILY, daily_params(lat, lon, start, end), retries=LIVE_RETRIES, timeout=LIVE_TIMEOUT_S)
     s = pd.Series(js["properties"]["parameter"]["T2M_MAX"])
     s.index = pd.to_datetime(s.index, format="%Y%m%d")
     return s.where(s != -999).rename("T2M_MAX").to_frame()
@@ -62,3 +67,13 @@ def hot_days_per_year(lat, lon, threshold=35.0, start=START_YEAR, end=LAST_FULL_
                              {"url": daily_url(lat, lon, start, end)})
     counts = (df["T2M_MAX"] > threshold).groupby(df.index.year).sum().astype(int)
     return counts.rename("hot_days"), st
+
+
+def fetch_point(lat, lon):
+    """Monthly + daily POWER for one point, fetched IN PARALLEL (cached ones return at once).
+    Returns (monthly_df, monthly_status, monthly_key, hot_days_series, daily_status)."""
+    with ThreadPoolExecutor(2) as ex:
+        fm, fd = ex.submit(monthly, lat, lon), ex.submit(hot_days_per_year, lat, lon)
+        df, st, key = fm.result()
+        hot, st2 = fd.result()
+    return df, st, key, hot, st2

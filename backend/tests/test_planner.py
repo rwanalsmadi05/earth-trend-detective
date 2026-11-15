@@ -315,3 +315,68 @@ def test_demo_case_end_to_end_gives_all_five_witnesses_even_if_the_llm_is_down(m
     assert [w["variable"] for w in c["witnesses"]] == ["T2M", "PRECTOTCORR", "GWETROOT", "HOT_DAYS", "NDVI"]
     assert c["cleaned_question"] == "Run the demo case: Azraq" and c["place"]["name"] == "Azraq"
     assert client.post("/plan", json={"question": "run the demo case: Azraq"}).json()["planner"] == "demo"
+
+
+# ---- cached plans obey the planning rules too (regression: a plan cached before the rules existed had no T2M/HOT_DAYS) --
+def _write_stale_plan(path, question, vids, language="en"):
+    stale = planner.Plan(question, question, language, {"name": "Azraq", "name_ar": "الأزرق", "lat": 31.88, "lon": 36.83, "source": "gazetteer"},
+                         planner._vars([(v, "An old reason.") for v in vids], language), {"start": 1981, "end": 2025}, "gemini", "fake-model")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(planner.asdict(stale), ensure_ascii=False), "utf-8")
+
+
+def test_cached_plan_gets_the_planning_rules_applied_on_read(monkeypatch, tmp_path):
+    monkeypatch.setattr(planner, "CACHE_ON", True)
+    monkeypatch.setattr(planner, "PLAN_CACHE", tmp_path)
+    q = "Is Azraq drying up?"
+    _write_stale_plan(planner._cache_path(q), q, ["PRECTOTCORR", "GWETROOT", "NDVI"])      # exactly the stale plan we found
+    monkeypatch.setattr(llm, "available", lambda: False)                                    # the cache, not the LLM, answers
+    p = planner.plan_question(q)
+    vs = [v["variable"] for v in p.variables]
+    assert "T2M" in vs and "HOT_DAYS" in vs and 4 <= len(vs) <= 5
+    assert vs[:1] == ["T2M"] and {"PRECTOTCORR", "GWETROOT", "NDVI"} <= set(vs)               # nothing the LLM chose is dropped
+    old = {v["variable"]: v["reason"] for v in p.variables}
+    assert old["PRECTOTCORR"] == "An old reason." and old["NDVI"] == "An old reason."         # kept reasons
+    assert old["T2M"] == VARIABLES["T2M"]["reason"] and old["HOT_DAYS"] == VARIABLES["HOT_DAYS"]["reason"]   # template reasons added
+    assert p.planner == "gemini" and p.model == "fake-model"                                  # still the cached Gemini plan
+
+
+def test_cached_arabic_drying_plan_gets_arabic_reasons_for_added_variables(monkeypatch, tmp_path):
+    monkeypatch.setattr(planner, "CACHE_ON", True)
+    monkeypatch.setattr(planner, "PLAN_CACHE", tmp_path)
+    q = "هل الأزرق جاف؟"
+    _write_stale_plan(planner._cache_path(q), q, ["PRECTOTCORR"], "ar")
+    monkeypatch.setattr(llm, "available", lambda: False)
+    by = {v["variable"]: v for v in planner.plan_question(q).variables}
+    assert "T2M" in by and "HOT_DAYS" in by and len(by) >= 4
+    assert any("؀" <= c <= "ۿ" for c in by["T2M"]["reason"] + by["T2M"]["label"])
+
+
+def test_plans_cached_under_the_old_version_are_ignored(monkeypatch, tmp_path):
+    import hashlib
+    monkeypatch.setattr(planner, "CACHE_ON", True)
+    monkeypatch.setattr(planner, "PLAN_CACHE", tmp_path)
+    q = "Is Azraq drying up?"
+    old = tmp_path / (hashlib.sha256(("v3|" + q.lower()).encode("utf-8")).hexdigest()[:24] + ".json")
+    _write_stale_plan(old, q, ["PRECTOTCORR", "GWETROOT", "NDVI"])
+    assert planner._cache_path(q) != old and planner.CACHE_VERSION == "v4"
+    calls = fake_llm(monkeypatch, lp(variables=[LLMVar(variable="PRECTOTCORR", reason="Rain.")]))
+    p = planner.plan_question(q)
+    assert len(calls) == 1 and p.model == "fake-model"                                       # the v3 file was not used
+    assert "T2M" in [v["variable"] for v in p.variables]
+
+
+def test_cached_narrow_plan_is_not_padded(monkeypatch, tmp_path):
+    monkeypatch.setattr(planner, "CACHE_ON", True)
+    monkeypatch.setattr(planner, "PLAN_CACHE", tmp_path)
+    q = "How humid is Aqaba?"
+    _write_stale_plan(planner._cache_path(q), q, ["RH2M", "T2M", "PRECTOTCORR"])
+    monkeypatch.setattr(llm, "available", lambda: False)
+    assert [v["variable"] for v in planner.plan_question(q).variables] == ["RH2M", "T2M", "PRECTOTCORR"]
+
+
+def test_apply_rules_is_idempotent():
+    q = "Is Azraq drying up?"
+    p = planner.rules_plan(q)
+    once = [v["variable"] for v in planner.apply_rules(q, p).variables]
+    assert [v["variable"] for v in planner.apply_rules(q, p).variables] == once

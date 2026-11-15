@@ -74,8 +74,9 @@ def image_key(case_id: str, tag: str, day: str) -> str:
     return f"img_{case_id}_{tag}_{day}.jpg"
 
 
-def snapshot(case_id, tag, bbox, day, layer_list, refresh=False):
-    """Fetch + cache one snapshot. Refuses layers/dates the capabilities document does not list."""
+def snapshot(case_id, tag, bbox, day, layer_list, refresh=False, timeout=None, retries=None):
+    """Fetch + cache one snapshot. Refuses layers/dates the capabilities document does not list.
+    `timeout` / `retries` let a live request fail fast instead of waiting minutes."""
     if isinstance(layer_list, str):
         layer_list = [layer_list]
     for lyr in layer_list:
@@ -85,7 +86,8 @@ def snapshot(case_id, tag, bbox, day, layer_list, refresh=False):
     if p.exists() and not refresh:
         return p, "cached"
     url = snapshot_url(bbox, day, layer_list)
-    data = get(url, binary=True)
+    kw = {k: v for k, v in (("timeout", timeout), ("retries", retries)) if v is not None}
+    data = get(url, binary=True, **kw)
     if len(data) < 5000 or data[:3] != b"\xff\xd8\xff":
         raise RuntimeError(f"snapshot is not a usable JPEG ({len(data)} bytes)")
     cache.save_blob(p.name, data, {"url": url, "layers": layer_list, "date": day})

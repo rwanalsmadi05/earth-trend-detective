@@ -47,3 +47,12 @@ def tsc_ok(tmp_path, type_name: str, obj, name="check"):
     out = subprocess.run([str(TSC), "--noEmit", "--strict", "--skipLibCheck", "--target", "es2020",
                           "--module", "esnext", "--moduleResolution", "bundler", str(ts)], capture_output=True, text=True)
     return out.returncode == 0, out.stdout + out.stderr
+
+
+def tsc_compile(tmp_path, source: str, name="check"):
+    """Compile arbitrary TypeScript source with the frontend's own tsc. Returns (ok, compiler output)."""
+    ts = tmp_path / f"{name}.ts"
+    ts.write_text(source, encoding="utf-8")
+    out = subprocess.run([str(TSC), "--noEmit", "--strict", "--skipLibCheck", "--target", "es2020",
+                          "--module", "esnext", "--moduleResolution", "bundler", str(ts)], capture_output=True, text=True)
+    return out.returncode == 0, out.stdout + out.stderr

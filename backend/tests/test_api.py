@@ -88,7 +88,7 @@ def test_response_typechecks_against_the_real_types_ts(azraq, tmp_path):
         f'import type {{ CaseResponse, Witness, SatImage }} from "{TYPES_TS.as_posix()[:-3]}";\n'
         "type BBox = [number, number, number, number];\n"
         "type Img = SatImage & { bbox: BBox };\n"
-        'type W = Omit<Witness, "images"> & { images: { before: Img; after: Img } };\n'
+        'type W = Omit<Witness, "images"> & { images: { before: Img; after: Img } | null };\n'
         'type Case = Omit<CaseResponse, "witnesses" | "cleaned_question"> & { witnesses: W[]; cleaned_question: string };\n'
         f"export const x: Case = {json.dumps(merged, ensure_ascii=False)};\n", encoding="utf-8")
     out = subprocess.run([str(TSC), "--noEmit", "--strict", "--skipLibCheck", "--target", "es2020",

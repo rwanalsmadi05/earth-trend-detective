@@ -221,8 +221,20 @@ def _from_llm(question: str, out: LLMPlan, model: str) -> Plan:
     return Plan(question, cleaned, lang, place, _vars(pairs, lang), _period(out.start_year, out.end_year), "gemini", model)
 
 
+CACHE_VERSION = "v4"   # bumped when the planning rules changed: plans cached under older versions are ignored
+
+
 def _cache_path(question: str):
-    return PLAN_CACHE / (hashlib.sha256(("v3|" + question.strip().lower()).encode("utf-8")).hexdigest()[:24] + ".json")
+    return PLAN_CACHE / (hashlib.sha256((CACHE_VERSION + "|" + question.strip().lower()).encode("utf-8")).hexdigest()[:24] + ".json")
+
+
+def apply_rules(question: str, plan: "Plan") -> "Plan":
+    """Run the planning rules (4-5 witnesses for broad questions, T2M + HOT_DAYS for drying questions) on a plan that
+    already exists, e.g. one read from the cache. Existing reasons are kept; added variables get template reasons."""
+    have = {v["variable"]: v["reason"] for v in plan.variables}
+    vids = shape_variables(question, [v["variable"] for v in plan.variables])
+    plan.variables = _vars([(v, have.get(v) or _reason(v, plan.language)) for v in vids], plan.language)
+    return plan
 
 
 DEMO_RE = re.compile(r"\bdemo\b|ديمو|تجريب", re.I)
@@ -245,7 +257,7 @@ def plan_question(question: str, use_cache: bool = True) -> Plan:
     p = _cache_path(question)
     if use_cache and CACHE_ON and p.exists():
         try:
-            return Plan(**json.loads(p.read_text("utf-8")))
+            return apply_rules(question, Plan(**json.loads(p.read_text("utf-8"))))   # rules apply to cached plans too
         except Exception:  # noqa: BLE001
             pass
     reason = None
