@@ -5,7 +5,6 @@ import { askPartner } from "../api/client";
 
 interface Msg extends ChatMessage { source?: ChatResponse["source"]; local?: boolean }
 
-const CHIPS = ["Which witness is the strongest?", "Is this really changing, or just noise?", "What should I check next?"];
 
 export default function ChatPanel({ data }: { data: CaseResponse }) {
   const place = data.place.name.split(",")[0];
@@ -38,6 +37,9 @@ export default function ChatPanel({ data }: { data: CaseResponse }) {
     finally { setBusy(false); }
   }
 
+  // starter questions the partner can answer from the computed numbers (it declines anything else)
+  const lead = data.witnesses[0]?.label.toLowerCase();
+  const CHIPS = ["Is this really changing, or just noise?", ...(lead ? [`Is the ${lead} change real or just noise?`, `What does the p-value for ${lead} mean?`] : [])];
   const fresh = msgs.length === 1;
   return (
     <>

@@ -13,7 +13,7 @@ export interface Witness {
   source: string;                // "NASA POWER (PRECTOTCORR)"
   source_url: string;
   start_year: number;            // NDVI = 2000
-  images: { before: SatImage; after: SatImage };
+  images: { before: SatImage; after: SatImage } | null; // null when no usable photos exist
   stats: {
     n: number;                   // months used
     tau: number;                 // Mann-Kendall (Hamed-Rao)
