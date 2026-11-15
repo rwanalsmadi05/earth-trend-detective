@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import type { CaseResponse, TwistResponse, TwistSide } from "../api/types";
+import type { CaseResponse, TwistResponse, TwistSide, VariableId } from "../api/types";
 import { getTwist } from "../api/client";
-import { formatBig } from "../lib/format";
+import { formatBig, isOrange } from "../lib/format";
 import Stamp from "./Stamp";
 
-function Side({ s, words, label, delay, reduced, active }: { s: TwistSide; words: { up: string; down: string }; label: string; delay: number; reduced: boolean; active: boolean }) {
-  const up = s.value > 0, color = up ? "#7CC8FF" : "#FF8A3D";
+function Side({ s, variable, words, label, delay, reduced, active }: { s: TwistSide; variable: VariableId; words: { up: string; down: string }; label: string; delay: number; reduced: boolean; active: boolean }) {
+  const color = isOrange(variable, s.value) ? "#FF8A3D" : "#7CC8FF";
   const b = formatBig(s.value, s.display_unit);
   const size = Math.round(Math.min(300, Math.max(190, 190 + Math.abs(s.value) * 2.2)));
   return (
@@ -46,14 +46,14 @@ export default function Twist({ data }: { data: CaseResponse }) {
         <h2 className="mt-3 font-display text-[clamp(1.6rem,4vw,3rem)] font-black leading-tight">One variable. Two directions.</h2>
 
         <div className="mt-14 flex flex-col items-center justify-center gap-10 md:flex-row md:gap-0">
-          <Side s={res.a} words={res.words} label={res.label ?? ""} delay={0.1} reduced={reduced} active={inView} />
+          <Side s={res.a} variable={res.variable!} words={res.words} label={res.label ?? ""} delay={0.1} reduced={reduced} active={inView} />
           <div className="flex items-center md:w-64 md:flex-col md:px-4">
             <motion.div initial={reduced ? false : { scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}} transition={{ delay: 0.9, duration: 0.8 }}
               className="hidden h-[3px] w-full origin-left rounded md:block" style={{ background: "linear-gradient(90deg,#FF8A3D,#7CC8FF)", boxShadow: "0 0 18px #FF8A3D88, 0 0 18px #7CC8FF88" }} />
             <motion.p initial={reduced ? false : { opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 1.3 }}
               className="mt-0 font-type text-sm uppercase tracking-[0.25em] text-paper md:mt-4">same cause,<br />opposite effects</motion.p>
           </div>
-          <Side s={res.b} words={res.words} label={res.label ?? ""} delay={0.5} reduced={reduced} active={inView} />
+          <Side s={res.b} variable={res.variable!} words={res.words} label={res.label ?? ""} delay={0.5} reduced={reduced} active={inView} />
         </div>
 
         <motion.p initial={reduced ? false : { opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 1.6, duration: 0.8 }}

@@ -50,7 +50,7 @@ const witnesses: Witness[] = [
 export const mockAzraq: CaseResponse = {
   case_id: "azraq-demo",
   question: "Is Azraq drying up?",
-  place: { name: "Azraq, Jordan", name_ar: "الأزرق، الأردن", lat: 31.88, lon: 36.83 },
+  place: { name: "Azraq, Jordan", lat: 31.88, lon: 36.83 },
   period: { start: 1981, end: END },
   witnesses,
   chain: [

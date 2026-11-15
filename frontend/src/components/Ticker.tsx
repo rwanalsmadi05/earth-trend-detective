@@ -1,6 +1,6 @@
 ﻿const ITEMS = [
   "NASA POWER · monthly 1981 → 2025", "MODIS NDVI · from 2000", "Mann-Kendall (Hamed-Rao) · Sen's slope",
-  "CONFIRMED means p < 0.05 — decided by math, never by the AI", "Blue = rising · Orange = falling",
+  "CONFIRMED means p < 0.05 — decided by math, never by the AI", "Orange = warmer, drier, more heat · Blue = cooler, wetter",
   "Correlation is not causation", "POWER is reanalysis-based at ~0.5° resolution",
 ];
 export default function Ticker() {

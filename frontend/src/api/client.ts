@@ -1,5 +1,6 @@
-import type { CaseResponse, ExpertItem, GameRound, GridResponse, ManualCaseRequest, Witness, LifetimeItem, LifetimeResponse, TwistResponse, VariableId } from "./types";
+import type { CaseResponse, ChatMessage, ChatRequest, ChatResponse, ExpertItem, GameRound, GridResponse, ManualCaseRequest, Witness, LifetimeItem, LifetimeResponse, TwistResponse, VariableId } from "./types";
 import { defaultBbox, mockGrid, mockTwist } from "../mock/grid";
+import { mockReply } from "../lib/chatMock";
 import { mockAzraq } from "../mock/azraq";
 
 // Flip VITE_USE_MOCK=false once the backend serves POST /case in the shape of types.ts.
@@ -21,7 +22,9 @@ export async function openCase(question: string, loc?: { lat: number; lon: numbe
       post<CaseResponse>("/case", body),
       post<{ variables: Record<string, ExpertItem> }>("/case/expert", body).catch(() => null), // expert info is optional
     ]);
-    return { ...c, expert: ex?.variables };
+    // a click on the globe sends coordinates as the question; once the place has a real name, title the case with it
+    const named = loc && c.place?.name && !/^\s*-?\d/.test(c.place.name);
+    return { ...c, question: named ? `What is changing in ${c.place.name}?` : c.question, expert: ex?.variables };
   }
 }
 
@@ -101,6 +104,9 @@ export async function getTwist(ctx: CaseResponse): Promise<TwistResponse> {
 
 export { defaultBbox };
 
+// The cached Where-map region. Outside it the grid would be computed live (slow), so the map is hidden.
+export const inCachedGrid = (lat: number, lon: number) => lat >= 29 && lat <= 34 && lon >= 34 && lon <= 40;
+
 // ---- Manual mode: pick the witnesses yourself ---------------------------------------
 export async function openManualCase(req: ManualCaseRequest): Promise<CaseResponse> {
   const place = req.place?.trim() || `${req.lat.toFixed(2)}°N ${req.lon.toFixed(2)}°E`;
@@ -113,7 +119,7 @@ export async function openManualCase(req: ManualCaseRequest): Promise<CaseRespon
     if (!ws.length) throw new Error("The demo data only has temperature, rainfall, root-zone soil moisture and NDVI. Start the backend for the rest.");
     const confirmed = ws.filter((w) => w.verdict === "CONFIRMED").length;
     data = {
-      ...mockAzraq, case_id: `manual_${req.lat}_${req.lon}`, place: { name: place, name_ar: "", lat: req.lat, lon: req.lon },
+      ...mockAzraq, case_id: `manual_${req.lat}_${req.lon}`, place: { name: place, lat: req.lat, lon: req.lon },
       period: { start: req.start, end: req.end }, witnesses: ws, chain: [], hints: [],
       verdict: { confirmed, total: ws.length, headline: `${confirmed} of ${ws.length} witnesses show a significant change (simulated)` },
     };
@@ -183,4 +189,24 @@ export async function getGameRounds(ctx: CaseResponse, n = 5): Promise<GameRound
   take.push(...shuffle(np).slice(0, wantNp)); take.push(...shuffle(cf).slice(0, target - take.length));
   if (take.length < target) take.push(...np.filter((r) => !take.includes(r)).slice(0, target - take.length));
   return shuffle(take);
+}
+
+// ---- Ask your partner ---------------------------------------------------------------
+// POST /chat when the backend has it; a missing endpoint (404/405) or an unreachable backend falls back to a mock
+// that is flagged source:"mock" (the UI labels it SIMULATED). Any other backend error is shown, never hidden.
+export async function askPartner(ctx: CaseResponse, message: string, history: ChatMessage[]): Promise<ChatResponse> {
+  const body: ChatRequest = {
+    case_id: ctx.case_id, message, history: history.slice(-10),
+    place: { name: ctx.place.name, lat: ctx.place.lat, lon: ctx.place.lon },
+    variables: ctx.witnesses.map((w) => w.variable), start: ctx.period.start, end: ctx.period.end,
+  };
+  if (!USE_MOCK) {
+    try {
+      const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (res.ok && (res.headers.get("content-type") ?? "").includes("json")) return (await res.json()) as ChatResponse;
+      if (res.status !== 404 && res.status !== 405) throw new Error(`The partner could not answer (${res.status}).`);
+    } catch (e) { if (e instanceof Error && e.message.startsWith("The partner")) throw e; /* unreachable: mock */ }
+  }
+  await new Promise((r) => setTimeout(r, 700));
+  return { reply: mockReply(ctx, message), source: "mock" };
 }

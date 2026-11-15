@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import type { CaseResponse } from "../api/types";
-import { bigNumber } from "../lib/format";
+import { bigNumber, isOrange } from "../lib/format";
 
 // Fixed 1080x1080 card for the PNG export. Inline px styles on purpose: it is rendered off-screen at full size.
 const CaseCardNode = forwardRef<HTMLDivElement, { data: CaseResponse }>(function CaseCardNode({ data }, ref) {
@@ -30,10 +30,10 @@ const CaseCardNode = forwardRef<HTMLDivElement, { data: CaseResponse }>(function
 
         <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 22 }}>
           {ws.map((w) => {
-            const b = bigNumber(w), color = w.direction === "up" ? "#7CC8FF" : "#FF8A3D", conf = w.verdict === "CONFIRMED";
+            const b = bigNumber(w), color = w.verdict !== "CONFIRMED" ? "#8f96a3" : isOrange(w.variable, w.direction === "up" ? 1 : -1) ? "#FF8A3D" : "#7CC8FF", conf = w.verdict === "CONFIRMED";
             return (
               <div key={w.variable} style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 12, padding: "18px 22px" }}>
-                <div style={{ fontFamily: "Unbounded, sans-serif", fontWeight: 900, fontSize: ws.length >= 5 ? 54 : 64, color, lineHeight: 1, textShadow: `0 0 24px ${color}88` }}>{b.sign}{b.value}<span style={{ fontSize: "0.5em" }}>{b.unit}</span></div>
+                <div style={{ fontFamily: "Unbounded, sans-serif", fontWeight: 900, fontSize: ws.length >= 5 ? 54 : 64, color, lineHeight: 1, textShadow: w.verdict === "CONFIRMED" ? `0 0 24px ${color}88` : "none" }}>{b.sign}{b.value}<span style={{ fontSize: "0.5em" }}>{b.unit}</span></div>
                 <div style={{ marginTop: 8, fontFamily: "Special Elite, monospace", fontSize: 22 }}>{w.label}</div>
                 <div style={{ marginTop: 6, fontFamily: "JetBrains Mono, monospace", fontSize: 15, letterSpacing: 2, color: conf ? "#ff5a4d" : "#a9b4c4" }}>{w.verdict} · p {w.stats.p < 0.001 ? "< 0.001" : `= ${w.stats.p.toFixed(3)}`}</div>
               </div>
@@ -44,7 +44,7 @@ const CaseCardNode = forwardRef<HTMLDivElement, { data: CaseResponse }>(function
 
       <div style={{ position: "absolute", left: 64, right: 64, bottom: 48, fontFamily: "JetBrains Mono, monospace", fontSize: 15, lineHeight: 1.5, color: "rgba(244,241,234,.5)" }}>
         Sources: {sources.join(" · ")}<br />
-        Verdicts: modified Mann-Kendall on de-seasonalised anomalies, p &lt; 0.05. Computed from the data, not by the AI. Blue = rising, orange = falling.<br />
+        Verdicts: modified Mann-Kendall on de-seasonalised anomalies, p &lt; 0.05. Computed from the data, not by the AI. Orange = warmer, drier, more heat. Blue = cooler, wetter.<br />
         {data.data_label.origin === "mock" ? "SIMULATED DEMO DATA · " : data.data_label.origin === "cache" ? "Cached data · " : "Live data · "}fetched {data.data_label.fetched}
       </div>
     </div>

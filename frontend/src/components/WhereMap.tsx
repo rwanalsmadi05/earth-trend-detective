@@ -4,11 +4,15 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import type { CaseResponse, GridCell, GridResponse, VariableId } from "../api/types";
 import { defaultBbox, getGrid } from "../api/client";
-import { formatBig } from "../lib/format";
+import { formatBig, isOrange } from "../lib/format";
 
 maplibregl.setWorkerUrl(workerUrl); // Vite: load the worker as its own file instead of letting dep pre-bundling break it
 
-const BLUE = [124, 200, 255], ORANGE = [255, 138, 61];
+// pale -> deep ramps: orange = the "stress" direction (warmer, less rain, drier), blue = the other one
+const RAMP = { orange: [[255, 204, 156], [255, 100, 14]], blue: [[184, 226, 255], [48, 142, 232]] } as const;
+const ramp = (orange: boolean, t: number) => { const [a, b] = RAMP[orange ? "orange" : "blue"]; return a.map((x, i) => Math.round(x + (b[i] - x) * Math.min(1, Math.max(0, t)))); };
+const css = (c: number[]) => `rgb(${c[0]},${c[1]},${c[2]})`;
+const sgn = (v: number, unit: string) => { const b = formatBig(v, unit); return `${b.sign}${b.value}${unit === "%" ? "%" : unit === "°C" ? " °C" : unit}`; };
 const WINDOW = 5; // years in the running mean that drives the slider
 
 const fmt = (v: number, unit: string) => {
@@ -43,7 +47,9 @@ const cellAtPoint = (g: GridResponse, m: Geom, lng: number, lat: number) => {
 
 const p90 = (xs: number[]) => { const s = [...xs].sort((a, b) => a - b); return s.length ? s[Math.min(s.length - 1, Math.floor(s.length * 0.9))] || s[s.length - 1] || 1 : 1; };
 
-type Vals = { disp: number[][]; vmax: number; vmaxAll: number };
+// stretch = most significant cells move the same way, so the colour scale spans their own min-max (lo..hi in |value|)
+type Scale = { stretch: boolean; lo: number; hi: number; minV: number; maxV: number; orangeDominant: boolean };
+type Vals = { disp: number[][]; vmax: number; vmaxAll: number; scale: Scale };
 
 // per-cell value shown at each year = change since the first year (running mean), the final year = the tested trend
 function useValues(grid: GridResponse | null): Vals | null {
@@ -56,7 +62,14 @@ function useValues(grid: GridResponse | null): Vals | null {
     });
     const all = p90(grid.cells.map((c) => Math.abs(c.value)));
     const sig = grid.cells.filter((c) => c.significant).map((c) => Math.abs(c.value));
-    return { disp, vmaxAll: all || 1, vmax: (sig.length ? p90(sig) : all) || 1 };
+    const sv = grid.cells.filter((c) => c.significant).map((c) => c.value);
+    const pos = sv.filter((v) => v > 0).length, neg = sv.length - pos, domSign = pos >= neg ? 1 : -1;
+    const stretch = sv.length >= 3 && Math.max(pos, neg) / sv.length >= 0.8;
+    const dom = stretch ? sv.filter((v) => Math.sign(v) === domSign) : sv;
+    const mag = (stretch ? sv : dom).map(Math.abs);
+    const lo = mag.length ? Math.min(...mag) : 0, hi = mag.length ? Math.max(...mag) : 1;
+    const scale: Scale = { stretch, lo, hi: hi - lo < 1e-9 ? lo + 1 : hi, minV: dom.length ? Math.min(...dom) : 0, maxV: dom.length ? Math.max(...dom) : 0, orangeDominant: isOrange(grid.variable, domSign) };
+    return { disp, vmaxAll: all || 1, vmax: (sig.length ? p90(sig) : all) || 1, scale };
   }, [grid]);
 }
 
@@ -66,10 +79,19 @@ function heatURL(grid: GridResponse, m: Geom, vals: Vals, k: number): string {
   const t = tmp.getContext("2d")!;
   grid.cells.forEach((c, i) => {
     const col = Math.round((c.lon - m.minLon) / grid.step), row = Math.round((m.maxLat - c.lat) / grid.step);
-    const v = vals.disp[i][k] ?? 0, rgb = v >= 0 ? BLUE : ORANGE;
-    // significant cells: full colour. Not significant: still tinted by direction and size (the hatching sits on top),
-    // so the slider visibly moves even when nothing passes the correction.
-    const a = c.significant ? 0.72 * Math.pow(Math.min(1, Math.abs(v) / vals.vmax), 0.8) : 0.05 + 0.2 * Math.pow(Math.min(1, Math.abs(v) / vals.vmaxAll), 0.8);
+    const v = vals.disp[i][k] ?? 0, av = Math.abs(v), orange = isOrange(grid.variable, v), sc = vals.scale;
+    let rgb: number[], a: number;
+    if (!c.significant) {
+      // still tinted by direction and size under the hatching, so the slider moves even when nothing passes the correction
+      rgb = ramp(orange, 0.5); a = 0.05 + 0.2 * Math.pow(Math.min(1, av / vals.vmaxAll), 0.8);
+    } else if (sc.stretch) {
+      // colour spans the significant cells' own min..max; opacity grows with the change so the slider still fills in over time
+      const tt = (av - sc.lo) / (sc.hi - sc.lo), grow = Math.min(1, av / (sc.lo || 1));
+      rgb = ramp(orange, tt); a = (0.5 + 0.32 * Math.min(1, Math.max(0, tt))) * Math.pow(grow, 0.9);
+    } else {
+      const tt = Math.pow(Math.min(1, av / vals.vmax), 0.8);
+      rgb = ramp(orange, tt); a = 0.72 * tt;
+    }
     t.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a.toFixed(3)})`;
     t.fillRect(col * S, row * S, S + 0.5, S + 0.5);
   });
@@ -213,6 +235,9 @@ export default function WhereMap({ data, onOpenCase }: { data: CaseResponse; onO
 
   const mock = grid?.data_label.origin === "mock";
   const upWord = grid?.words.up ?? "rising", downWord = grid?.words.down ?? "falling";
+  const upIsOrange = grid ? isOrange(grid.variable, 1) : false; // which word goes with orange
+  const orangeWord = upIsOrange ? upWord : downWord, blueWord = upIsOrange ? downWord : upWord;
+  const sc = vals?.scale;
   const none = !!grid && nSig === 0;
 
   return (
@@ -242,10 +267,17 @@ export default function WhereMap({ data, onOpenCase }: { data: CaseResponse; onO
           {/* legend, in plain words */}
           <div className="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[15rem] rounded-lg border border-white/10 bg-black/65 p-3 font-mono text-[11px] leading-5 text-paper/85 backdrop-blur">
             <p className="mb-1 text-paper/50">CHANGE SINCE {period.start}</p>
-            <p><span className="mr-2 inline-block h-3 w-3 rounded-sm align-middle" style={{ background: "rgb(124,200,255)" }} />{upWord}</p>
-            <p><span className="mr-2 inline-block h-3 w-3 rounded-sm align-middle" style={{ background: "rgb(255,138,61)" }} />{downWord}</p>
+            <p><span className="mr-2 inline-block h-3 w-3 rounded-sm align-middle" style={{ background: css(ramp(true, 0.7)) }} />{orangeWord}</p>
+            <p><span className="mr-2 inline-block h-3 w-3 rounded-sm align-middle" style={{ background: css(ramp(false, 0.7)) }} />{blueWord}</p>
             <p><span className="mr-2 inline-block h-3 w-3 rounded-sm border border-paper/40 align-middle" style={{ background: "repeating-linear-gradient(45deg, rgba(244,241,234,.5) 0 1px, transparent 1px 4px)" }} />no clear change (faint tint)</p>
-            <p className="mt-1 text-paper/50">stronger colour = bigger change</p>
+            {sc && grid && nSig > 0 && (
+              <div className="mt-2 border-t border-white/10 pt-2">
+                <div className="h-2 w-full rounded-sm" style={{ background: sc.stretch ? `linear-gradient(to right, ${css(ramp(sc.orangeDominant, 0))}, ${css(ramp(sc.orangeDominant, 1))})` : `linear-gradient(to right, ${css(ramp(false, 1))}, ${css(ramp(false, 0))}, ${css(ramp(true, 0))}, ${css(ramp(true, 1))})` }} />
+                <div className="mt-0.5 flex justify-between text-[10px] text-paper/80"><span>{sgn(sc.minV, grid.display_unit)}</span><span>{sgn(sc.maxV, grid.display_unit)}</span></div>
+                <p className="text-[10px] leading-4 text-paper/50">{sc.stretch ? "scale stretched over the significant cells' own range" : "range of significant cells"}</p>
+              </div>
+            )}
+            {!(sc && nSig > 0) && <p className="mt-1 text-paper/50">stronger colour = bigger change</p>}
           </div>
           <div className="pointer-events-none absolute right-3 top-3 z-10 rounded bg-black/65 px-3 py-1.5 text-right font-mono text-[11px] text-paper/70 backdrop-blur">
             click any cell to open a case there · Ctrl + scroll to zoom

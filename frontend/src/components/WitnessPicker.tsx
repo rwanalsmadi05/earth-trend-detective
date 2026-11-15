@@ -61,7 +61,7 @@ export default function WitnessPicker({ initial, onClose, onSubmit, busy, error 
     map.on("click", (e) => {
       const lat = +e.lngLat.lat.toFixed(3), lon = +e.lngLat.lng.toFixed(3);
       const g = near(lat, lon);
-      setPlace(g ?? { name: `${lat.toFixed(2)}°N ${lon.toFixed(2)}°E`, name_ar: "", lat, lon });
+      setPlace(g ?? { name: `${lat.toFixed(2)}°N ${lon.toFixed(2)}°E`, lat, lon });
     });
     return () => { map.remove(); mapRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,13 +104,13 @@ export default function WitnessPicker({ initial, onClose, onSubmit, busy, error 
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_1.1fr]">
             <div>
               <div className="relative">
-                <input value={query} onChange={(e) => { setQuery(e.target.value); setOnline("idle"); }} dir="auto" placeholder="Search: Azraq, إربد, Aqaba…"
+                <input value={query} onChange={(e) => { setQuery(e.target.value); setOnline("idle"); }} placeholder="Search: Azraq, Irbid, Aqaba…"
                   className="w-full border-b-2 border-night/40 bg-white/60 px-3 py-2 font-type text-lg outline-none focus:border-stamp" />
                 {query.trim() && (
                   <ul className="absolute z-20 mt-1 w-full border border-night/20 bg-paper shadow-lg">
                     {suggestions.map((p) => (
                       <li key={p.name}><button className="flex w-full justify-between px-3 py-2 text-left hover:bg-stamp/10" onClick={() => { setPlace(p); setQuery(""); }}>
-                        <span>{p.name}</span><span dir="rtl" className="text-night/60">{p.name_ar}</span></button></li>
+                        <span>{p.name}</span></button></li>
                     ))}
                     {!suggestions.length && (
                       <li className="px-3 py-2 text-sm">
@@ -122,7 +122,7 @@ export default function WitnessPicker({ initial, onClose, onSubmit, busy, error 
                 )}
               </div>
               <p className="mt-4 text-[11px] tracking-widest text-night/50">SELECTED</p>
-              <p className="text-2xl">{place.name}{place.name_ar && <span dir="rtl" className="ml-3 text-night/60">{place.name_ar}</span>}</p>
+              <p className="text-2xl">{place.name}</p>
               <p className="text-sm text-night/60">{place.lat.toFixed(3)}°N, {place.lon.toFixed(3)}°E</p>
               <p className="mt-3 font-hand text-xl text-night/70">…or click the map to drop the red pin anywhere.</p>
             </div>

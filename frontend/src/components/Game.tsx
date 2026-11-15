@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { CaseResponse, GameRound } from "../api/types";
 import { getGameRounds } from "../api/client";
 import Stamp from "./Stamp";
+import { isOrange, ORANGE_INK, BLUE_INK } from "../lib/format";
 
 type Guess = "real" | "noise";
 
@@ -15,7 +16,7 @@ function RoundChart({ r, reveal }: { r: GameRound; reveal: boolean }) {
   const Y = (y: number) => H - pad - ((y - y0) / (y1 - y0 || 1)) * (H - 2 * pad);
   const line = r.series.map((s, i) => `${i ? "L" : "M"}${X(s.year).toFixed(1)},${Y(s.value).toFixed(1)}`).join(" ");
   const mean = ys.reduce((a, b) => a + b, 0) / ys.length, mx = (x0 + x1) / 2, k = r.sen_per_decade / 10;
-  const color = r.sen_per_decade >= 0 ? "#1f78b4" : "#d4560e";
+  const color = isOrange(r.variable, r.sen_per_decade) ? ORANGE_INK : BLUE_INK;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
       <g stroke="#0b0f14" strokeOpacity=".08">{[0.25, 0.5, 0.75].map((t) => <line key={t} x1={pad} x2={W - pad} y1={pad + t * (H - 2 * pad)} y2={pad + t * (H - 2 * pad)} />)}</g>

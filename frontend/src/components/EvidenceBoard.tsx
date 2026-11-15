@@ -1,11 +1,11 @@
 ﻿import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import type { CaseResponse, ExpertItem, SatImage, Witness } from "../api/types";
-import { bigNumber } from "../lib/format";
+import { bigNumber, isOrange } from "../lib/format";
 import Stamp from "./Stamp";
 import Detail from "./Detail";
 import Chart from "./Chart";
-import JordanMap from "./JordanMap";
+import CountryMap from "./CountryMap";
 import { Lamp, Magnifier } from "./Decor";
 
 const MAX = 5;
@@ -40,16 +40,29 @@ function Crosshair({ x, y }: { x: number; y: number }) {
   );
 }
 
+// A photo that loaded but is blank (flat colour) or almost black is as useless as a missing one.
+function looksEmpty(img: HTMLImageElement): boolean {
+  try {
+    const c = document.createElement("canvas"); c.width = 32; c.height = 27;
+    const g = c.getContext("2d", { willReadFrequently: true })!; g.drawImage(img, 0, 0, 32, 27);
+    const d = g.getImageData(0, 0, 32, 27).data; let sum = 0, sq = 0, dark = 0; const n = d.length / 4;
+    for (let i = 0; i < d.length; i += 4) { const l = 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2]; sum += l; sq += l * l; if (l < 14) dark++; }
+    const mean = sum / n, sd = Math.sqrt(Math.max(0, sq / n - mean * mean));
+    return mean < 14 || dark / n > 0.9 || sd < 4;
+  } catch { return false; } // cross-origin canvas: cannot inspect, assume fine
+}
+
 function Polaroid({ w, i, ex, compact, place, onOpen }: { w: Witness; i: number; ex?: ExpertItem; compact: boolean; place: { lat: number; lon: number }; onOpen: () => void }) {
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
   const [after, setAfter] = useState(true);
-  const [broken, setBroken] = useState(false);
+  const [bad, setBad] = useState<Record<string, boolean>>({});
   const img = after ? w.images?.after : w.images?.before;
-  const hasImg = !!img?.url && !broken; // no photo (or it failed to load) -> show the series instead of an empty frame
+  const hasImg = !!img?.url && !bad[img.url]; // no photo, failed to load, or blank/dark -> show the series instead of an empty frame
   const borderline = !!ex?.borderline && w.verdict === "CONFIRMED"; // flag comes from the backend (POST /case/expert)
   const big = bigNumber(w);
   const pos = placeInPhoto(img?.bbox, place.lat, place.lon, natural);
-  const tone = w.direction === "up" ? "text-[#1f78b4]" : "text-[#d4560e]";
+  // NOT PROVEN never gets a direction colour: a muted grey number cannot be mistaken for a confirmed result
+  const tone = w.verdict !== "CONFIRMED" ? "text-[#8a8f98]" : isOrange(w.variable, w.direction === "up" ? 1 : -1) ? "text-[#d4560e]" : "text-[#1f78b4]";
   return (
     <motion.button type="button" onClick={onOpen}
       initial={{ y: -120, opacity: 0, rotate: TILT[i] * 3 }} whileInView={{ y: 0, opacity: 1, rotate: TILT[i] }} viewport={{ once: true, margin: "-80px" }}
@@ -60,7 +73,7 @@ function Polaroid({ w, i, ex, compact, place, onOpen }: { w: Witness; i: number;
       <div className="relative aspect-[6/5] overflow-hidden bg-slate-800">
         {hasImg ? (
           <>
-            <img src={img!.url} alt={`${w.label} satellite ${img!.date}`} loading="lazy" className="h-full w-full object-cover" onLoad={(e) => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })} onError={() => setBroken(true)} />
+            <img src={img!.url} alt={`${w.label} satellite ${img!.date}`} loading="lazy" className="h-full w-full object-cover" onLoad={(e) => { const el = e.currentTarget; setNatural({ w: el.naturalWidth, h: el.naturalHeight }); if (looksEmpty(el)) setBad((b) => ({ ...b, [img!.url]: true })); }} onError={() => setBad((b) => ({ ...b, [img!.url]: true }))} />
             <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1 font-mono text-[9px] text-paper">NASA GIBS · {img!.date}</span>
             <span role="button" onClick={(e) => { e.stopPropagation(); setAfter(!after); }}
               className="absolute right-1 top-1 rounded bg-black/60 px-1.5 py-0.5 font-mono text-[9px] text-paper hover:bg-black/80">{after ? "NOW" : "THEN"} ⇄</span>
@@ -200,7 +213,7 @@ export default function EvidenceBoard({ data, onPick }: { data: CaseResponse; on
 
                 <div className="relative w-[22%] rotate-2 bg-[#e8dcc0] p-2 pb-1 shadow-[0_10px_18px_rgba(0,0,0,.45)]">
                   <span className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-stamp shadow-[0_3px_4px_rgba(0,0,0,.5)]" />
-                  <JordanMap lat={data.place.lat} lon={data.place.lon} name={data.place.name} />
+                  <CountryMap lat={data.place.lat} lon={data.place.lon} name={data.place.name} />
                   <p className="font-mono text-[9px] text-night/50">Outline: Natural Earth</p>
                 </div>
               </div>

@@ -46,7 +46,7 @@ export interface CaseResponse {
   case_id: string;
   question: string;              // the text the user typed
   cleaned_question?: string;     // planner's tidied question; optional, falls back to `question`
-  place: { name: string; name_ar: string; lat: number; lon: number };
+  place: { name: string; name_ar?: string; lat: number; lon: number }; // name_ar may be sent by the backend; the UI never shows it
   period: { start: number; end: number };
   witnesses: Witness[];
   chain: { from: VariableId; to: VariableId; lag_months: number; r: number }[]; // correlation, not causation
@@ -137,4 +137,22 @@ export interface GameRound {
   borderline?: boolean;
   explanation: string;        // one plain line
   data_label: { origin: "live" | "cache" | "mock"; fetched: string };
+}
+
+// POST /chat  ("Ask your partner")  (planned backend endpoint)
+// The backend answers from the case's computed numbers only: the partner never invents a number or decides a verdict.
+export interface ChatMessage { role: "user" | "assistant"; content: string }
+export interface ChatRequest {
+  case_id: string;
+  message: string;                 // the user's new message (English)
+  history?: ChatMessage[];         // previous turns (the UI sends at most the last 10)
+  // enough to rebuild the case from the cache, also for manual / clicked-on-the-globe cases
+  place: { name: string; lat: number; lon: number };
+  variables: VariableId[];
+  start: number; end: number;
+}
+export interface ChatResponse {
+  reply: string;                   // plain text, in `lang`
+  source: "llm" | "template" | "mock"; // template = no LLM key set; mock = frontend placeholder
+  cited?: VariableId[];            // witnesses whose numbers the reply relied on
 }

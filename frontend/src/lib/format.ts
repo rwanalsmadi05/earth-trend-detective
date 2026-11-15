@@ -1,4 +1,11 @@
-import type { Witness } from "../api/types";
+import type { VariableId, Witness } from "../api/types";
+
+// Colour by meaning, not by sign: warming, less rain, drier soil, less humidity, less green, more hot days = ORANGE;
+// cooling, more rain, wetter soil = BLUE. (Orange is the "stress" direction for the place.)
+const WARM_UP = new Set<VariableId>(["T2M", "T2M_MAX", "HOT_DAYS", "ALLSKY_SFC_SW_DWN"]);
+export const isOrange = (variable: VariableId, signed: number) => (WARM_UP.has(variable) ? signed > 0 : signed < 0);
+export const ORANGE_HEX = "#FF8A3D", BLUE_HEX = "#7CC8FF"; // on dark backgrounds
+export const ORANGE_INK = "#d4560e", BLUE_INK = "#1f78b4"; // on paper
 
 export interface Big { sign: "+" | "−" | ""; value: string; unit: string; }
 

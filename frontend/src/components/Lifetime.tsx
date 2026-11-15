@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import type { CaseResponse, LifetimeItem, LifetimeResponse } from "../api/types";
 import { getLifetime } from "../api/client";
-import { digitsFor } from "../lib/format";
+import { digitsFor, isOrange, ORANGE_HEX, BLUE_HEX } from "../lib/format";
 import Stamp from "./Stamp";
 
 function useCountUp(target: number, active: boolean, reduced: boolean, ms = 1700) {
@@ -21,12 +21,13 @@ function useCountUp(target: number, active: boolean, reduced: boolean, ms = 1700
 function Giant({ item, i, active, reduced, birth }: { item: LifetimeItem; i: number; active: boolean; reduced: boolean; birth: number }) {
   const v = useCountUp(item.value, active, reduced);
   const d = digitsFor(item.display_unit, item.value);
-  const color = item.direction === "up" ? "#7CC8FF" : "#FF8A3D";
+  const confirmed = item.verdict === "CONFIRMED";
+  const color = !confirmed ? "#9aa3b2" : isOrange(item.variable, item.value) ? ORANGE_HEX : BLUE_HEX;
   const sign = item.value > 0 ? "+" : item.value < 0 ? "−" : "";
   return (
     <motion.div initial={reduced ? false : { opacity: 0, y: 30 }} animate={active ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 + i * 0.25, duration: 0.7 }}
       className="flex flex-col items-center text-center" title={`Source: ${item.source} · p = ${item.p < 0.0001 ? "<0.0001" : item.p.toFixed(3)}`}>
-      <p className="font-display font-black leading-none tracking-tight" style={{ color, fontSize: "clamp(2.6rem, 7vw, 6rem)", textShadow: `0 0 18px ${color}, 0 0 60px ${color}88` }}>
+      <p className="font-display font-black leading-none tracking-tight" style={{ color, fontSize: "clamp(2.6rem, 7vw, 6rem)", textShadow: confirmed ? `0 0 18px ${color}, 0 0 60px ${color}88` : "none" }}>
         {sign}{Math.abs(v).toFixed(d)}<span className="ml-1 text-[0.45em]">{item.display_unit}</span>
       </p>
       <p className="mt-4 max-w-[16rem] font-hand text-3xl leading-8 text-paper/90">{item.headline}</p>
@@ -79,7 +80,7 @@ export default function Lifetime({ data }: { data: CaseResponse }) {
           <input aria-label="Birth year" type="number" inputMode="numeric" min={start} max={end - 1} value={birth} onChange={(e) => setBirth(e.target.value.slice(0, 4))}
             className={inputCls} style={{ width: "4.6ch" }} />{" "}
           in{" "}
-          <input aria-label="Place" value={place} onChange={(e) => setPlace(e.target.value)} dir="auto"
+          <input aria-label="Place" value={place} onChange={(e) => setPlace(e.target.value)}
             className={inputCls} style={{ width: `${Math.max(5, place.length + 1)}ch` }} />.
           <br />Since then…
         </h2>

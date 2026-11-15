@@ -1,0 +1,5 @@
+Imagery credits (all NASA, public domain)
+day.jpg     NASA Blue Marble, shaded relief + bathymetry (GIBS layer BlueMarble_ShadedRelief_Bathymetry)
+night.jpg   NASA Earth Observatory "Earth at Night" / Black Marble 2012 (dnb_land_ocean_ice.2012.3600x1800), resized
+ocean.png   ocean / specular mask derived from the NASA MODIS land-water mask (GIBS layer MODIS_Terra_L3_Land_Water_Mask)
+clouds.jpg  smooth cloud map = NASA MODIS Terra cloud-fraction coverage (2025-07-01) combined with procedural fractal noise; coverage from the NASA MODIS Terra cloud fraction composite of 2025-07-01 (GIBS layer MODIS_Terra_Cloud_Fraction_Day); orbit gaps filled and smoothed

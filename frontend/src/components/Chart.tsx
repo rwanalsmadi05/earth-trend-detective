@@ -1,4 +1,5 @@
 ﻿import type { Witness } from "../api/types";
+import { isOrange, ORANGE_HEX, BLUE_HEX } from "../lib/format";
 
 export default function Chart({ w }: { w: Witness }) {
   const W = 480, H = 160, pad = 8;
@@ -10,7 +11,7 @@ export default function Chart({ w }: { w: Witness }) {
   // Sen-style line for display: slope per decade through the series mean
   const mean = ys.reduce((a, b) => a + b, 0) / ys.length, mx = (x0 + x1) / 2, k = w.stats.sen_per_decade / 10;
   const ty = (x: number) => mean + k * (x - mx);
-  const color = w.direction === "up" ? "#7CC8FF" : "#FF8A3D";
+  const color = w.verdict !== "CONFIRMED" ? "#8f96a3" : isOrange(w.variable, w.direction === "up" ? 1 : -1) ? ORANGE_HEX : BLUE_HEX;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
       <path d={line} fill="none" stroke="#F4F1EA" strokeOpacity=".5" strokeWidth="1.5" />
