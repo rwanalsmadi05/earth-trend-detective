@@ -1,0 +1,31 @@
+# Keep secrets, dev junk and everything the image does not need OUT of the build context.
+
+# secrets: never in the image
+.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# version control / editor
+.git
+.gitignore
+.claude
+.vscode
+
+# frontend: rebuilt inside the image
+frontend/node_modules
+frontend/dist
+frontend/.env*
+
+# backend: only app/, requirements-prod.txt and seed_cache/ are used
+backend/data
+backend/tests
+backend/tools
+backend/.pytest_cache
+backend/requirements.txt
+**/__pycache__
+**/*.pyc
+
+# docs / logs
+*.md
+**/*.log
