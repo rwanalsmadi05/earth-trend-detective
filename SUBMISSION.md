@@ -92,8 +92,8 @@ All verdicts come from `backend/app/stats.py`.
 
 ## 9. Links and team
 
-- Demo: [DEMO URL]
-- Code: [GITHUB REPO]
+- Demo: https://earth-trend-detective-heo3.onrender.com
+- Code: https://github.com/rwanalsmadi05/earth-trend-detective
 - Video: [VIDEO]
 
 **Team:**
