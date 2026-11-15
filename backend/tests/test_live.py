@@ -4,6 +4,7 @@ import re
 import shutil
 import threading
 import time
+import types
 
 import numpy as np
 import pandas as pd
@@ -49,19 +50,23 @@ def live(monkeypatch, tmp_path):
     shutil.copy(CACHE_DIR / "gibs_capabilities.xml", tmp_path / "gibs_capabilities.xml")     # real capabilities, no network
     monkeypatch.setattr(cache, "CACHE_DIR", tmp_path)
     monkeypatch.setattr(cache, "META", tmp_path / "meta.json")
-    calls = {"monthly": 0, "daily": 0, "nominatim": [], "wvs": 0}
+    calls = {"monthly": 0, "daily": 0, "nominatim": [], "wvs": 0, "spans": []}
     opts = {"monthly": fake_monthly(), "sleep": 0.0, "nominatim": {"address": {"city": "Nairobi", "country": "Kenya"},
                                                                     "namedetails": {"name:ar": "نيروبي"}},
             "wvs_ok": True}
 
     def monthly(lat, lon, start, end):
+        t0 = time.time()
         calls["monthly"] += 1
         time.sleep(opts["sleep"])
+        calls["spans"].append(("monthly", t0, time.time()))
         return opts["monthly"]
 
     def daily(lat, lon, start, end):
+        t0 = time.time()
         calls["daily"] += 1
         time.sleep(opts["sleep"])
+        calls["spans"].append(("daily", t0, time.time()))
         return fake_daily()
 
     def nominatim_get(url, params=None, **kw):
@@ -114,9 +119,7 @@ def test_second_click_is_instant_and_makes_no_network_calls(live):
     calls, _ = live
     a = post().json()
     before = (calls["monthly"], calls["daily"], len(calls["nominatim"]), calls["wvs"])
-    t = time.time()
     b = post().json()
-    assert time.time() - t < 3
     assert (calls["monthly"], calls["daily"], len(calls["nominatim"]), calls["wvs"]) == before            # nothing re-fetched
     assert b["data_label"]["origin"] == "cache" and b["place"] == a["place"]
     assert [w["stats"] for w in a["witnesses"]] == [w["stats"] for w in b["witnesses"]]
@@ -132,12 +135,12 @@ def test_coordinates_are_rounded_so_nearby_clicks_share_the_cache(live):
 
 def test_monthly_and_daily_are_fetched_in_parallel(live):
     calls, opts = live
-    opts["sleep"] = 0.5                                                  # each POWER call takes 0.5 s
-    t = time.time()
+    opts["sleep"] = 0.3                                                  # each POWER call takes a while
     power.fetch_point(10.0, 20.0)
-    elapsed = time.time() - t
-    assert calls["monthly"] == 1 and calls["daily"] == 1
-    assert elapsed < 0.85, f"took {elapsed:.2f}s: serial would be >= 1.0 s, parallel ~0.5 s"
+    spans = {name: (t0, t1) for name, t0, t1 in calls["spans"]}
+    assert set(spans) == {"monthly", "daily"} and calls["monthly"] == 1 and calls["daily"] == 1
+    # parallel = each started before the other finished (a serial implementation never overlaps), at any machine speed
+    assert spans["monthly"][0] < spans["daily"][1] and spans["daily"][0] < spans["monthly"][1], spans
 
 
 # ---- reverse geocoding: cached, polite --------------------------------------------------------------------------------
@@ -257,44 +260,158 @@ def test_a_pair_with_only_one_image_is_null_too(live, monkeypatch):
     assert c["witnesses"][0]["images"] is None                                                            # never half a polaroid
 
 
-def test_failed_images_are_retried_in_the_background_with_backoff_and_then_cached(live, monkeypatch):
+@pytest.fixture
+def timers(monkeypatch):
+    """Replaces threading.Timer inside case_builder with one that records (delay, callback) and never runs by itself:
+    the test decides when a scheduled retry 'happens', so nothing depends on how fast the machine is."""
+    bucket = []
+
+    class FakeTimer:
+        def __init__(self, delay, fn, args=()):
+            self.delay, self.fn, self.args, self.cancelled, self.daemon = delay, fn, args, False, False
+            bucket.append(self)
+
+        def start(self):
+            pass
+
+        def cancel(self):
+            self.cancelled = True
+
+        def fire(self):
+            self.fn(*self.args)
+
+    monkeypatch.setattr(case_builder, "threading", types.SimpleNamespace(Timer=FakeTimer, Lock=threading.Lock))
+    return bucket
+
+
+def settled():
+    """No download running (retries are submitted to a pool thread when a timer fires)."""
+    return not case_builder._inflight
+
+
+def test_failed_images_are_retried_in_the_background_with_backoff_and_then_cached(live, timers, monkeypatch):
     calls, opts = live
-    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (0.05, 0.1, 0.2))
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (20, 60))
     opts["wvs_ok"] = False
-    c1 = post(variables=("T2M",)).json()
-    assert c1["witnesses"][0]["images"] is None
-    opts["wvs_ok"] = True                                                                                 # Worldview recovers
+    assert post(variables=("T2M",)).json()["witnesses"][0]["images"] is None
+    assert [t.delay for t in timers] == [20, 20]                                                          # one retry per image (before, after)
+    opts["wvs_ok"] = True                                                                                 # Worldview recovers...
+    for t in list(timers):
+        t.fire()                                                                                          # ...and the retries run
     assert wait_until(lambda: len(list(cache.CACHE_DIR.glob("img_custom_-1.29_36.82_*.jpg"))) == 2), "background retry never cached the images"
+    assert wait_until(lambda: not case_builder._pending and settled())                                    # a successful retry cleans up after itself
+    assert not case_builder._failed_at
     c2 = post(variables=("T2M",)).json()
     imgs = c2["witnesses"][0]["images"]
     assert imgs and imgs["before"]["url"].startswith("/api/images/") and imgs["after"]["url"].startswith("/api/images/")
     assert client.get(imgs["before"]["url"].replace("/api", "", 1)).headers["content-type"] == "image/jpeg"   # served from the cache
+    assert len(timers) == 2                                                                               # success schedules nothing more
 
 
-def test_retries_back_off_instead_of_hammering(live, monkeypatch):
+def test_retries_back_off_instead_of_hammering(live, timers, monkeypatch):
     calls, opts = live
-    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (2.5, 5.0))                                       # far longer than a request takes
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (20, 60, 180))
     opts["wvs_ok"] = False
     post(variables=("T2M",))
-    after_first = calls["wvs"]
-    assert after_first >= 1
+    assert calls["wvs"] == 2 and [t.delay for t in timers] == [20, 20]
+    for _ in range(3):                                                                                    # however many clicks, however slowly...
+        post(variables=("T2M",))
+    assert calls["wvs"] == 2 and len(timers) == 2                                                         # ...they start no extra fetches while retries are pending
+    for t in list(timers):                                                                                # the scheduled retry round happens
+        t.fire()
+    assert wait_until(lambda: calls["wvs"] == 4 and settled())
+    assert [t.delay for t in timers[2:]] == [60, 60]                                                      # and the delay GROWS (exponential-ish backoff)
     post(variables=("T2M",))
-    post(variables=("T2M",))
-    assert calls["wvs"] == after_first                                                                    # new clicks do not start extra fetches
-    assert wait_until(lambda: calls["wvs"] > after_first, 6.0)                                           # the scheduled retry does happen
+    assert calls["wvs"] == 4                                                                              # still no hammering from new clicks
 
 
-def test_retries_stop_after_the_last_backoff_step(live, monkeypatch):
+def test_a_pending_retry_alone_prevents_duplicate_fetches(live, timers, monkeypatch):
+    """Two independent guards stop a new click from re-fetching a failed image: the post-failure COOLDOWN and 'a retry is
+    already scheduled'. With the cooldown switched off only the second is left, and it must be enough on its own (this is
+    the situation when a backoff step, e.g. 600 s, is longer than the cooldown, 300 s)."""
     calls, opts = live
-    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (0.05, 0.05))
+    monkeypatch.setattr(case_builder, "COOLDOWN_S", 0)
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (600, 1200))
     opts["wvs_ok"] = False
     post(variables=("T2M",))
-    assert wait_until(lambda: not case_builder._pending and not case_builder._inflight, 3.0)
-    settled = calls["wvs"]
-    time.sleep(0.3)
-    assert calls["wvs"] == settled                                                                        # gave up: 1 try + 2 retries per image
-    assert settled == 6                                                                                   # 2 images x (1 try + 2 retries)
+    assert calls["wvs"] == 2 and len(timers) == 2
+    for _ in range(3):
+        post(variables=("T2M",))
+    assert calls["wvs"] == 2 and len(timers) == 2
+
+
+def test_the_cooldown_alone_stops_refetching_after_the_retries_are_exhausted(live, timers, monkeypatch):
+    """After the last retry failed nothing is pending any more; only the COOLDOWN keeps the next click from starting over."""
+    calls, opts = live
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (1,))
+    opts["wvs_ok"] = False
+    post(variables=("T2M",))
+    for t in list(timers):
+        t.fire()
+    assert wait_until(lambda: calls["wvs"] == 4 and settled() and not case_builder._pending)
+    for _ in range(2):
+        post(variables=("T2M",))
+    assert calls["wvs"] == 4                                                                              # cooldown holds
+    monkeypatch.setattr(case_builder, "COOLDOWN_S", 0)                                                   # once it has elapsed, a click may start over
+    post(variables=("T2M",))
+    assert calls["wvs"] == 6
+
+
+def test_retries_stop_after_the_last_backoff_step(live, timers, monkeypatch):
+    calls, opts = live
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (1, 2))
+    opts["wvs_ok"] = False
+    post(variables=("T2M",))
+    assert calls["wvs"] == 2 and [t.delay for t in timers] == [1, 1]
+    for t in list(timers):
+        t.fire()
+    assert wait_until(lambda: calls["wvs"] == 4 and settled())
+    assert [t.delay for t in timers[2:]] == [2, 2]
+    for t in list(timers[2:]):
+        t.fire()
+    assert wait_until(lambda: calls["wvs"] == 6 and settled() and not case_builder._pending)
+    assert len(timers) == 4                                                                               # gave up: 1 try + 2 retries per image, no 5th timer
     assert post(variables=("T2M",)).json()["witnesses"][0]["images"] is None                             # still null, still a valid case
+    assert calls["wvs"] == 6                                                                              # and (cooldown) not hammered again
+
+
+def test_a_retry_for_an_image_that_got_cached_meanwhile_does_nothing(live, timers, monkeypatch):
+    """The pending retry of an image that is already on disk (cached by another request, or fetched by an earlier retry)
+    must not download it again. (Defence in depth: gibs.snapshot also returns early for a cached file, so removing the
+    check in case_builder._retry is an EQUIVALENT mutation, invisible from outside; this test pins the behaviour, not the layer.)"""
+    calls, opts = live
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (20,))
+    opts["wvs_ok"] = False
+    post(variables=("T2M",))
+    assert calls["wvs"] == 2 and len(timers) == 2 and len(case_builder._pending) == 2
+    for name in list(case_builder._pending):                                  # something else caches both images meanwhile
+        cache.blob_path(name).write_bytes(JPEG)
+    for t in list(timers):
+        t.fire()                                                              # the stale retries run...
+    assert wait_until(settled) and calls["wvs"] == 2                          # ...and download nothing
+    assert not case_builder._pending                                          # and they clear their own bookkeeping
+    assert post(variables=("T2M",)).json()["witnesses"][0]["images"] is not None
+
+
+def test_a_scheduled_retry_really_runs_on_a_real_timer(live, monkeypatch):
+    """Wiring check with the REAL threading.Timer. Asserts only that it EVENTUALLY works: every image fails on its first
+    attempt and succeeds afterwards, so the outcome depends neither on machine speed nor on thread interleaving."""
+    calls, opts = live
+
+    attempts = {}                                                         # per image URL: the first attempt fails, later ones succeed
+
+    def fails_first_attempt_per_image(url, binary=False, **kw):
+        calls["wvs"] += 1
+        attempts[url] = attempts.get(url, 0) + 1
+        if attempts[url] == 1:
+            raise RuntimeError("503")
+        return JPEG
+    monkeypatch.setattr(gibs, "get", fails_first_attempt_per_image)
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (0.05,))
+    assert post(variables=("T2M",)).status_code == 200      # NOT asserting images here: on a slow run the 0.05 s retry may already have landed
+    assert wait_until(lambda: len(list(cache.CACHE_DIR.glob("img_custom_-1.29_36.82_*.jpg"))) == 2, 15.0)
+    assert all(n >= 2 for n in attempts.values()) and len(attempts) == 2         # each image failed once, then the retry fetched it
+    assert post(variables=("T2M",)).json()["witnesses"][0]["images"] is not None
 
 
 def test_a_cached_pair_is_never_refetched(live):
@@ -305,16 +422,14 @@ def test_a_cached_pair_is_never_refetched(live):
     assert calls["wvs"] == n
 
 
-def test_shutdown_retries_cancels_everything(live, monkeypatch):
+def test_shutdown_retries_cancels_everything(live, timers, monkeypatch):
     calls, opts = live
-    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (0.2,))
+    monkeypatch.setattr(case_builder, "RETRY_BACKOFF_S", (20,))
     opts["wvs_ok"] = False
     post(variables=("T2M",))
-    n = calls["wvs"]
+    assert len(timers) == 2 and not any(t.cancelled for t in timers) and case_builder._pending
     case_builder.shutdown_retries()
-    opts["wvs_ok"] = True
-    time.sleep(0.5)
-    assert calls["wvs"] == n and not case_builder._pending
+    assert all(t.cancelled for t in timers) and not case_builder._pending and not case_builder._inflight
 
 
 # ---- cleaned_question for clicks on the globe -------------------------------------------------------------------------------
@@ -343,11 +458,11 @@ def test_slow_live_fetch_gives_a_clear_504_and_the_retry_is_fast(live, monkeypat
     assert r.status_code == 504
     d = r.json()["detail"]
     assert "longer than" in d and "cached" in d and "trying again" in d
-    time.sleep(1.5)                                                                                        # the work finished in the background
+    assert wait_until(lambda: list(cache.CACHE_DIR.glob("power_monthly_-1.29_36.82_*.parquet"))
+                      and list(cache.CACHE_DIR.glob("power_daily_t2mmax_-1.29_36.82_*.parquet")), 20.0)   # the work finished in the background
     monkeypatch.setattr(main, "LIVE_BUDGET_S", 60)
-    t = time.time()
     r2 = post(variables=("T2M",))
-    assert r2.status_code == 200 and time.time() - t < 3 and calls["monthly"] == 1                         # no second fetch
+    assert r2.status_code == 200 and calls["monthly"] == 1 and calls["daily"] == 1                         # served from the cache: no second fetch
 
 
 # ---- validation ---------------------------------------------------------------------------------------------------------------

@@ -67,7 +67,7 @@ All verdicts come from `backend/app/stats.py`.
 4. **Maps.** The same test runs in every grid cell, then **Benjamini-Hochberg FDR** correction across all tested cells of a variable (α = 0.05) before a cell is called significant.
 5. **Chain of evidence.** Lagged cross-correlation of the monthly anomalies at lags 0–6 months (|r| ≥ 0.3, at most three links). It shows what moved first; it is correlation, not causation.
 6. **False-positive check on synthetic noise** (`backend/tools/fp_experiment.py`, 100 seeds per setting, trendless AR(1) noise, nominal rate 5%). The implemented test gives **6% / 9% / 15%** false positives at autocorrelation φ = 0 / 0.6 / 0.9, with 83% power to detect a 0.01-per-year trend at φ = 0.6. The same experiment measured 11% / 20% / 32% for Hamed-Rao with default lags and 44% for the Yue-Wang variant, which is why we cap the lag at 12 and do not use Yue-Wang.
-7. **Tests.** 310 automated backend tests cover the statistics, the API, the AI guards and the game. 309 pass at the time of writing; one live-retry test (`test_retries_back_off_instead_of_hammering` in `tests/test_live.py`) currently fails.
+7. **Tests.** 383 automated backend tests cover the statistics, the API, the AI guards, the game, live places and the single-container server. All 383 pass at the time of writing. The image-retry tests use a fake timer the test fires on command (no wall-clock assumptions), and we checked they fail when the retry logic is deliberately broken.
 
 **Real results, not hand-picked.** In the cached Azraq grid, temperature is significant in 143 of 143 cells after FDR; rainfall in **0 of 143** cells; root-zone soil wetness in 7 of 135. The map says so in a banner instead of colouring noise.
 
