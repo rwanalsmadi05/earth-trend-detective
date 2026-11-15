@@ -137,9 +137,9 @@ const pTxt = (p: number) => (p < 0.0001 ? "p < 0.0001" : `p = ${p.toFixed(3)}`);
 
 export function explain(w: Witness, place: string, borderline: boolean): string {
   if (w.verdict === "CONFIRMED") {
-    return `Real trend: ${w.headline.charAt(0).toLowerCase()}${w.headline.slice(1)} at ${place} (${pTxt(w.stats.p)}). ${borderline ? "It only just passes the bar, so it is a borderline call." : "Chance alone would rarely draw a line this steady."}`;
+    return `Yes, it really changed: ${w.headline.charAt(0).toLowerCase()}${w.headline.slice(1)} at ${place} (${pTxt(w.stats.p)}). ${borderline ? "It only just passes the bar, so it is a borderline call." : "Chance alone would rarely draw a trend this steady."}`;
   }
-  return `Just noise, as far as the test can tell: ${w.label.toLowerCase()} at ${place} wobbles about as much as chance would make it (${pTxt(w.stats.p)}).`;
+  return `No, it is just normal ups and downs: ${w.label.toLowerCase()} at ${place} moves about as much as chance would make it (${pTxt(w.stats.p)}).`;
 }
 
 function toRound(w: Witness, ctx: CaseResponse, borderline: boolean): GameRound {

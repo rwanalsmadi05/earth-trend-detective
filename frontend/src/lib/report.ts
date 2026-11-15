@@ -16,7 +16,7 @@ export async function downloadCardPng(node: HTMLElement, d: CaseResponse) {
 
 // jsPDF's built-in fonts are Latin-1 only, so swap the few characters outside it.
 const L1 = (s: string) => s.replace(/·/g, "-").replace(/−/g, "-").replace(/→/g, "->").replace(/…/g, "...").replace(/[“”]/g, '"').replace(/[’]/g, "'").replace(/≥/g, ">=").replace(/[^\x00-\xFF]/g, "");
-const pf = (p: number) => (p < 0.0001 ? "<0.0001" : p.toFixed(4));
+const pf = (p: number) => (p < 0.0001 ? "<0.0001" : p < 0.01 ? p.toPrecision(2) : p.toFixed(4));
 
 export async function downloadReportPdf(d: CaseResponse) {
   const { jsPDF } = await import("jspdf");

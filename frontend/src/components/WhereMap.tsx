@@ -8,6 +8,9 @@ import { formatBig, isOrange } from "../lib/format";
 
 maplibregl.setWorkerUrl(workerUrl); // Vite: load the worker as its own file instead of letting dep pre-bundling break it
 
+// POWER monthly variables: the only ones the grid endpoint can serve (not NDVI, not the daily-count hot days)
+const GRID_VARS = new Set<VariableId>(["T2M", "T2M_MAX", "PRECTOTCORR", "GWETROOT", "GWETTOP", "RH2M", "ALLSKY_SFC_SW_DWN"]);
+
 // pale -> deep ramps: orange = the "stress" direction (warmer, less rain, drier), blue = the other one
 const RAMP = { orange: [[255, 204, 156], [255, 100, 14]], blue: [[184, 226, 255], [48, 142, 232]] } as const;
 const ramp = (orange: boolean, t: number) => { const [a, b] = RAMP[orange ? "orange" : "blue"]; return a.map((x, i) => Math.round(x + (b[i] - x) * Math.min(1, Math.max(0, t)))); };
@@ -126,7 +129,7 @@ export default function WhereMap({ data, onOpenCase }: { data: CaseResponse; onO
   const [variable, setVariable] = useState<VariableId | null>(null);
   useEffect(() => {
     let stale = false;
-    const vars = [...new Set(data.witnesses.map((w) => w.variable))];
+    const vars = [...new Set(data.witnesses.map((w) => w.variable))].filter((v) => GRID_VARS.has(v));
     Promise.all(vars.map((v) => getGrid(v, bbox, data).then((g) => [v, g] as const).catch(() => [v, null] as const))).then((rs) => {
       if (stale) return;
       const ok: Partial<Record<VariableId, GridResponse>> = {};

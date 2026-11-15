@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import type { CaseResponse, LifetimeItem, LifetimeResponse } from "../api/types";
 import { getLifetime } from "../api/client";
-import { digitsFor, isOrange, ORANGE_HEX, BLUE_HEX } from "../lib/format";
+import { digitsFor, fmtP, isOrange, ORANGE_HEX, BLUE_HEX } from "../lib/format";
 import Stamp from "./Stamp";
 
 function useCountUp(target: number, active: boolean, reduced: boolean, ms = 1700) {
@@ -26,7 +26,7 @@ function Giant({ item, i, active, reduced, birth }: { item: LifetimeItem; i: num
   const sign = item.value > 0 ? "+" : item.value < 0 ? "−" : "";
   return (
     <motion.div initial={reduced ? false : { opacity: 0, y: 30 }} animate={active ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 + i * 0.25, duration: 0.7 }}
-      className="flex flex-col items-center text-center" title={`Source: ${item.source} · p = ${item.p < 0.0001 ? "<0.0001" : item.p.toFixed(3)}`}>
+      className="flex flex-col items-center text-center" title={`Source: ${item.source} · p = ${fmtP(item.p)}`}>
       <p className="font-display font-black leading-none tracking-tight" style={{ color, fontSize: "clamp(2.6rem, 7vw, 6rem)", textShadow: confirmed ? `0 0 18px ${color}, 0 0 60px ${color}88` : "none" }}>
         {sign}{Math.abs(v).toFixed(d)}<span className="ml-1 text-[0.45em]">{item.display_unit}</span>
       </p>

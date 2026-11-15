@@ -3,31 +3,58 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { CaseResponse, GameRound } from "../api/types";
 import { getGameRounds } from "../api/client";
 import Stamp from "./Stamp";
-import { isOrange, ORANGE_INK, BLUE_INK } from "../lib/format";
+import { fmtP, isOrange, ORANGE_INK, BLUE_INK } from "../lib/format";
 
 type Guess = "real" | "noise";
 
-// An unlabeled series. After the reveal it gains the years and the Sen's slope line.
+// Yearly bars around the long-term average: above the average in amber, below in slate. Before the answer the chart carries
+// only the years and the unit; after it, the Sen's slope line (the tested trend) is drawn over the bars.
+const ABOVE = "#d08a1e", BELOW = "#5b7ea3";
+const shortUnit = (u: string) => (/index/i.test(u) ? "index" : u.length > 16 ? u.slice(0, 15) + "…" : u);
+const tick = (v: number) => { const a = Math.abs(v); return (v > 0 ? "+" : v < 0 ? "−" : "") + (a >= 10 ? a.toFixed(0) : a >= 1 ? a.toFixed(1) : a.toPrecision(2)); };
+
 function RoundChart({ r, reveal }: { r: GameRound; reveal: boolean }) {
-  const W = 560, H = 200, pad = 14;
-  const xs = r.series.map((s) => s.year), ys = r.series.map((s) => s.value);
-  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
-  const X = (x: number) => pad + ((x - x0) / (x1 - x0)) * (W - 2 * pad);
-  const Y = (y: number) => H - pad - ((y - y0) / (y1 - y0 || 1)) * (H - 2 * pad);
-  const line = r.series.map((s, i) => `${i ? "L" : "M"}${X(s.year).toFixed(1)},${Y(s.value).toFixed(1)}`).join(" ");
-  const mean = ys.reduce((a, b) => a + b, 0) / ys.length, mx = (x0 + x1) / 2, k = r.sen_per_decade / 10;
+  const W = 560, H = 250, L = 56, R = 14, T = 14, B = 34;
+  const n = r.series.length, ys = r.series.map((s) => s.value), years = r.series.map((s) => s.year);
+  const avg = ys.reduce((x, y) => x + y, 0) / n, dev = ys.map((v) => v - avg);
+  const maxDev = Math.max(...dev.map(Math.abs)) || 1, m = maxDev * 1.15;
+  const plotW = W - L - R, plotH = H - T - B, slot = plotW / n, bw = Math.max(2, slot * 0.72);
+  const cx = (i: number) => L + slot * (i + 0.5);
+  const Y = (d: number) => T + plotH / 2 - (d / m) * (plotH / 2);
+  const y0 = Y(0);
+  const meanYear = years.reduce((x, y) => x + y, 0) / n, k = r.sen_per_decade / 10;
   const color = isOrange(r.variable, r.sen_per_decade) ? ORANGE_INK : BLUE_INK;
+  const labelIdx = [0, Math.floor((n - 1) / 2), n - 1];
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
-      <g stroke="#0b0f14" strokeOpacity=".08">{[0.25, 0.5, 0.75].map((t) => <line key={t} x1={pad} x2={W - pad} y1={pad + t * (H - 2 * pad)} y2={pad + t * (H - 2 * pad)} />)}</g>
-      <path d={line} fill="none" stroke="#0b0f14" strokeWidth="2" strokeLinejoin="round" />
-      {r.series.map((s) => <circle key={s.year} cx={X(s.year)} cy={Y(s.value)} r="2.6" fill="#0b0f14" />)}
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`Yearly values from ${years[0]} to ${years[n - 1]}, as bars above or below the average`}>
+      {/* y axis: deviation from the average, with the unit */}
+      <g fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#0b0f14" opacity=".6">
+        <text x={L - 6} y={Y(maxDev) + 3} textAnchor="end">{tick(maxDev)}</text>
+        <text x={L - 6} y={y0 + 3} textAnchor="end">0</text>
+        <text x={L - 6} y={Y(-maxDev) + 3} textAnchor="end">{tick(-maxDev)}</text>
+        <text transform={`translate(11 ${T + plotH / 2}) rotate(-90)`} textAnchor="middle" fontSize="10">vs average · {shortUnit(r.unit)}</text>
+      </g>
+      <line x1={L} x2={L} y1={T} y2={T + plotH} stroke="#0b0f14" strokeOpacity=".25" />
+      {/* bars */}
+      {dev.map((d, i) => (
+        <rect key={years[i]} x={cx(i) - bw / 2} width={bw} y={d >= 0 ? Y(d) : y0} height={Math.max(0.5, Math.abs(Y(d) - y0))} fill={d >= 0 ? ABOVE : BELOW} rx="0.8" />
+      ))}
+      {/* long-term average */}
+      <line x1={L} x2={W - R} y1={y0} y2={y0} stroke="#0b0f14" strokeWidth="1.4" strokeDasharray="5 4" />
+      <text x={W - R} y={y0 - 4} textAnchor="end" fontSize="10" fontFamily="JetBrains Mono, monospace" fill="#0b0f14" opacity=".7">average</text>
+      {/* x axis: first, middle, last year */}
+      {labelIdx.map((i, j) => (
+        <g key={i}>
+          <line x1={cx(i)} x2={cx(i)} y1={T + plotH} y2={T + plotH + 4} stroke="#0b0f14" strokeOpacity=".4" />
+          <text x={cx(i)} y={H - 12} textAnchor={j === 0 ? "start" : j === 2 ? "end" : "middle"} fontSize="11" fontFamily="JetBrains Mono, monospace" fill="#0b0f14" opacity=".75">{years[i]}</text>
+        </g>
+      ))}
       {reveal && (
         <>
-          <motion.line x1={X(x0)} x2={X(x1)} y1={Y(mean + k * (x0 - mx))} y2={Y(mean + k * (x1 - mx))} stroke={color} strokeWidth="3.5" strokeLinecap="round" strokeDasharray={r.verdict === "CONFIRMED" ? undefined : "8 6"}
-            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ duration: 0.8 }} />
-          <text x={pad} y={H - 1} fontSize="11" fill="#0b0f14" opacity=".55" fontFamily="JetBrains Mono">{x0}</text>
-          <text x={W - pad} y={H - 1} fontSize="11" fill="#0b0f14" opacity=".55" textAnchor="end" fontFamily="JetBrains Mono">{x1}</text>
+          <motion.line x1={cx(0)} x2={cx(n - 1)} y1={Y(k * (years[0] - meanYear))} y2={Y(k * (years[n - 1] - meanYear))} stroke="#fff" strokeOpacity=".85" strokeWidth="7" strokeLinecap="round"
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8 }} />
+          <motion.line x1={cx(0)} x2={cx(n - 1)} y1={Y(k * (years[0] - meanYear))} y2={Y(k * (years[n - 1] - meanYear))} stroke={r.verdict === "CONFIRMED" ? color : "#6b7280"} strokeWidth="3.5" strokeLinecap="round" strokeDasharray={r.verdict === "CONFIRMED" ? undefined : "8 6"}
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8 }} />
         </>
       )}
     </svg>
@@ -68,7 +95,7 @@ export default function Game({ data }: { data: CaseResponse }) {
       <div className="relative mx-auto max-w-3xl text-center">
         <p className="font-mono text-xs tracking-[0.5em] text-paper/50">THE GAME</p>
         <h2 className="mt-3 font-display text-[clamp(1.6rem,4vw,3rem)] font-black leading-tight">Real or noise?</h2>
-        <p className="mx-auto mt-3 max-w-xl font-hand text-2xl text-paper/70">Real NASA series from this case. Can you tell a trend from chance before the statistics do?</p>
+        <p className="mx-auto mt-3 max-w-xl font-hand text-2xl text-paper/70">Real NASA data from this case. Can you tell a real change from normal ups and downs before the statistics do?</p>
 
         {loading && <p className="mt-12 font-mono text-xs tracking-widest text-paper/50">PULLING REAL SERIES…</p>}
         {rounds && rounds.length === 0 && (
@@ -90,13 +117,15 @@ export default function Game({ data }: { data: CaseResponse }) {
                   style={{ backgroundImage: "repeating-linear-gradient(transparent 0 31px, rgba(80,120,200,.12) 31px 32px)" }}>
                   <span className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-stamp shadow-[0_3px_4px_rgba(0,0,0,.5)]" />
                   <p className="font-type text-[11px] tracking-[0.3em] text-night/50">EXHIBIT {idx + 1} OF {rounds.length}</p>
-                  <p className="mt-1 font-type text-lg">{guess ? <>{round.label} <span className="text-night/50">·</span> {round.place.name}, {round.period.start}–{round.period.end}</> : "Yearly anomalies. Place and variable: classified."}</p>
+                  <p className="mt-1 font-type text-lg">{guess ? <>{round.label} <span className="text-night/50">·</span> {round.place.name}, {round.period.start}–{round.period.end}</> : "Yearly values. Place and variable: classified."}</p>
+                  <p className="mt-2 font-type text-xl leading-7">Did this really change since {round.series[0]?.year ?? round.period.start}, or is it just normal ups and downs?</p>
                   <div className="mt-3 rounded bg-white/60 p-2"><RoundChart r={round} reveal={!!guess} /></div>
+                  <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-night/60"><span><i className="mr-1 inline-block h-2.5 w-2.5 align-middle" style={{ background: ABOVE }} />above average</span><span><i className="mr-1 inline-block h-2.5 w-2.5 align-middle" style={{ background: BELOW }} />below average</span>{guess && <span><i className="mr-1 inline-block h-[3px] w-5 align-middle" style={{ background: "#444" }} />trend line</span>}</p>
 
                   {!guess ? (
                     <div className="mt-5 grid grid-cols-2 gap-3">
-                      <button onClick={() => answer("real")} className="border-[3px] border-[#1f78b4] bg-[#1f78b4]/10 px-3 py-3 font-type text-lg font-bold tracking-widest text-[#1f78b4] transition hover:bg-[#1f78b4] hover:text-paper">REAL TREND</button>
-                      <button onClick={() => answer("noise")} className="border-[3px] border-night/60 bg-night/5 px-3 py-3 font-type text-lg font-bold tracking-widest text-night/80 transition hover:bg-night hover:text-paper">JUST NOISE</button>
+                      <button onClick={() => answer("real")} className="border-[3px] border-[#1f78b4] bg-[#1f78b4]/10 px-3 py-3 font-type text-base font-bold tracking-wide text-[#1f78b4] transition hover:bg-[#1f78b4] hover:text-paper">It really changed</button>
+                      <button onClick={() => answer("noise")} className="border-[3px] border-night/60 bg-night/5 px-3 py-3 font-type text-base font-bold tracking-wide text-night/80 transition hover:bg-night hover:text-paper">Just ups and downs</button>
                     </div>
                   ) : (
                     <div className="mt-5">
@@ -137,4 +166,4 @@ export default function Game({ data }: { data: CaseResponse }) {
   );
 }
 
-const pTxt = (p: number) => (p < 0.0001 ? "p < 0.0001" : `p = ${p.toFixed(3)}`);
+const pTxt = (p: number) => (p < 0.0001 ? "p < 0.0001" : `p = ${fmtP(p)}`);

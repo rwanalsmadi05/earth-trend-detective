@@ -9,6 +9,8 @@ export const ORANGE_INK = "#d4560e", BLUE_INK = "#1f78b4"; // on paper
 
 export interface Big { sign: "+" | "−" | ""; value: string; unit: string; }
 
+export const fmtP = (p: number) => (p < 0.0001 ? "<0.0001" : p < 0.01 ? p.toPrecision(2) : p.toFixed(3));
+
 export const digitsFor = (unit: string, v: number) => (unit.trim() === "days" || (unit === "%" && Math.abs(v) >= 1) ? 0 : 1);
 
 export function formatBig(v: number, unit: string): Big {

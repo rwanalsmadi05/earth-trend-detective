@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import type { CaseResponse, TwistResponse, TwistSide, VariableId } from "../api/types";
 import { getTwist } from "../api/client";
-import { formatBig, isOrange } from "../lib/format";
+import { fmtP, formatBig, isOrange } from "../lib/format";
 import Stamp from "./Stamp";
 
 function Side({ s, variable, words, label, delay, reduced, active }: { s: TwistSide; variable: VariableId; words: { up: string; down: string }; label: string; delay: number; reduced: boolean; active: boolean }) {
@@ -11,7 +11,7 @@ function Side({ s, variable, words, label, delay, reduced, active }: { s: TwistS
   const size = Math.round(Math.min(300, Math.max(190, 190 + Math.abs(s.value) * 2.2)));
   return (
     <motion.div initial={reduced ? false : { opacity: 0, scale: 0.7 }} animate={active ? { opacity: 1, scale: 1 } : {}} transition={{ delay, duration: 0.8, type: "spring", damping: 14 }}
-      className="flex flex-col items-center text-center" title={`p = ${s.p < 0.0001 ? "<0.0001" : s.p.toFixed(3)}`}>
+      className="flex flex-col items-center text-center" title={`p = ${fmtP(s.p)}`}>
       <div className="relative flex items-center justify-center rounded-full" style={{ width: size, height: size, background: `radial-gradient(circle, ${color}55 0%, ${color}22 55%, transparent 72%)`, boxShadow: `0 0 70px 10px ${color}55, inset 0 0 40px ${color}44`, border: `2px solid ${color}` }}>
         {!reduced && <motion.span className="absolute inset-0 rounded-full" style={{ border: `2px solid ${color}` }} animate={{ scale: [1, 1.35], opacity: [0.6, 0] }} transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut" }} />}
         <div>

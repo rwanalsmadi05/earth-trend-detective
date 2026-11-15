@@ -2,6 +2,7 @@
 import type { ExpertItem, Witness } from "../api/types";
 import Chart from "./Chart";
 import Stamp from "./Stamp";
+import { fmtP } from "../lib/format";
 
 const fmt = (n: number, d = 3) => (Math.abs(n) >= 1 ? n.toFixed(2) : n.toFixed(d));
 
@@ -27,7 +28,7 @@ export default function Detail({ w, ex, onClose }: { w: Witness | null; ex?: Exp
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-3 font-mono text-xs sm:grid-cols-3">
               {([
-                ["tau", fmt(w.stats.tau)], ["p-value", w.stats.p < 0.0001 ? "<0.0001" : fmt(w.stats.p)], ["n (months)", String(w.stats.n)],
+                ["tau", fmt(w.stats.tau)], ["p-value", fmtP(w.stats.p)], ["n (months)", String(w.stats.n)],
                 ["Sen / decade", `${fmt(w.stats.sen_per_decade)} ${w.unit}`], ["Total change", `${fmt(w.stats.total_change)} ${w.unit}`],
                 ["vs baseline", `${w.stats.pct_change > 0 ? "+" : ""}${w.stats.pct_change}%`],
               ] as const).map(([k, v]) => (
